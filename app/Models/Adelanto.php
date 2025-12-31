@@ -1,0 +1,12 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class Adelanto extends Model
+{
+    protected $table = 'adelantos';
+    use HasFactory;
+}

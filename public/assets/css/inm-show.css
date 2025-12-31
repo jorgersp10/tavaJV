@@ -1,0 +1,59 @@
+.contenedor-galeria{
+    display: flex;
+    width: 100%;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    max-width: 1000px;
+    margin:auto;
+}
+.galeria-img{
+    width: 300px;
+    height: 350px;
+    margin-bottom: 30px;
+    object-fit: contain;
+}
+
+.contenedor-galeria button{
+    position: relative;
+    bottom: 4em;
+    right: 4em;
+    background-color: #8F0005;
+    border-radius: 1.5em;
+    color:white;
+    padding: 1em 1.5em;
+}
+
+.button-borrar{
+  display:inline-block;
+  position:relative;
+}
+
+.eliminado{
+    display:none;
+    position:relative;
+}
+
+
+/*********************** Estilos para el TAB  **********************/
+
+.menu {
+  display:flex;
+}
+
+.menu h5{
+  margin-right: 2rem;
+  cursor: pointer;
+}
+
+.contenedor {
+  margin-top: 2rem;
+  background-color: rgb(119, 163, 163);
+}
+
+[data-content] {
+  display:none;
+}
+
+.active[data-content] {
+  display:block;
+}
