@@ -55,6 +55,25 @@
                                     </div>
 
                                 </div>
+
+                                <div class="row mb-2">
+                                    <label for="horizontal-firstname-input" class="col-sm-1 col-form-label">Estado</label>
+                                    <div class="col-md-4">
+                                        <div class="mb-3">
+
+                                            <select class="form-control" name="estado_pago" id="estado_pago" style= "width:430px">
+
+                                                <option value="T">TODOS</option>
+                                                <option value="C">COBRADOS</option>
+                                                <option value="P">PENDIENTES</option>   
+
+                                            </select>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+
                                 <div>
                                     <button type="submit" class="btn btn-danger float-left"><i class="fa fa-file fa-1x"></i> Generar PDF</button>
                                 </div>
@@ -84,13 +103,12 @@
                                         <input type="date" id="fecha2" name="fecha2" class="form-control">
                                     </div>
                                 </div>
-                                <!-- SUCURSALES -->
                                 <div class="row mb-2">
                                     <label for="horizontal-firstname-input" class="col-sm-1 col-form-label">Cliente</label>
                                     <div class="col-md-4">
                                         <div class="mb-3">
 
-                                            <select class="form-control" name="cliente_id" id="cliente_id" style= "width:330px">
+                                            <select class="form-control" name="cliente_id_2" id="cliente_id_2" style= "width:430px">
 
                                                 <option value="0" disabled>Seleccionar Cliente</option>
 
@@ -130,6 +148,21 @@
                                     </div>
                                 </div>
                                 <!-- SUCURSALES -->
+                                 <div class="row mb-2">
+                                    <label for="horizontal-firstname-input" class="col-sm-1 col-form-label">Cliente</label>
+                                    <div class="col-md-4">
+                                        <div class="mb-3">
+
+                                            <select class="form-control" name="cliente_id_3" id="cliente_id_3" style= "width:430px">
+
+                                                <option value="0" disabled>Seleccionar Cliente</option>
+
+                                            </select>
+
+                                        </div>
+                                    </div>
+
+                                </div>
                                 <div>
                                     <button type="submit" class="btn btn-danger float-left"><i class="fa fa-file fa-1x"></i> Generar PDF</button>
                                 </div>
@@ -159,6 +192,21 @@
                                         <input type="date" id="fecha2" name="fecha2" class="form-control">
                                     </div>
                                 </div>
+                               <div class="row mb-2">
+                                    <label for="horizontal-firstname-input" class="col-sm-1 col-form-label">Proveedor</label>
+                                    <div class="col-md-4">
+                                        <div class="mb-3">
+
+                                            <select class="form-control" name="proveedor_id" id="proveedor_id" style= "width:430px">
+
+                                                <option value="0" disabled>Seleccionar Proveedor</option>
+
+                                            </select>
+
+                                        </div>
+                                    </div>
+
+                                </div>  
                                 <!-- SUCURSALES -->
                                 <div>
                                     <button type="submit" class="btn btn-danger float-left"><i class="fa fa-file fa-1x"></i> Generar PDF</button>
@@ -190,6 +238,21 @@
                                     </div>
                                 </div>
                                 <!-- SUCURSALES -->
+                                 <div class="row mb-2">
+                                    <label for="horizontal-firstname-input" class="col-sm-1 col-form-label">Proveedor</label>
+                                    <div class="col-md-4">
+                                        <div class="mb-3">
+
+                                            <select class="form-control" name="proveedor_id_2" id="proveedor_id_2" style= "width:430px">
+
+                                                <option value="0" disabled>Seleccionar Proveedor</option>
+
+                                            </select>
+
+                                        </div>
+                                    </div>
+
+                                </div>  
                                 <div>
                                     <button type="submit" class="btn btn-danger float-left"><i class="fa fa-file fa-1x"></i> Generar PDF</button>
                                 </div>
@@ -221,6 +284,21 @@
                                     </div>
                                 </div>
                                 <!-- SUCURSALES -->
+                                 <div class="row mb-2">
+                                    <label for="horizontal-firstname-input" class="col-sm-1 col-form-label">Proveedor</label>
+                                    <div class="col-md-4">
+                                        <div class="mb-3">
+
+                                            <select class="form-control" name="proveedor_id_3" id="proveedor_id_3" style= "width:430px">
+
+                                                <option value="0" disabled>Seleccionar Proveedor</option>
+
+                                            </select>
+
+                                        </div>
+                                    </div>
+
+                                </div>  
                                 <div>
                                     <button type="submit" class="btn btn-danger float-left"><i class="fa fa-file fa-1x"></i> Generar PDF</button>
                                 </div>
@@ -293,7 +371,7 @@
 
                 <div class="card">
                     <div class="card-header">
-                       <h2>Deuda a crédito o contado por rango de fecha</h2><br/>
+                       <h2>Deuda Clientes – créditos o contado por rango de fecha</h2><br/>
                     </div>
                     <div class="card-body">
                         <div class="form-group row">
@@ -322,6 +400,22 @@
                                             <option value="2">TODAS LAS FACTURAS</option>
                                         </select>
                                     </div>
+                                </div>
+                                <!-- SUCURSALES -->
+                                 <div class="row mb-2">
+                                    <label for="horizontal-firstname-input" class="col-sm-1 col-form-label">Cliente</label>
+                                    <div class="col-md-4">
+                                        <div class="mb-3">
+
+                                            <select class="form-control" name="cliente_id_4" id="cliente_id_4" style= "width:430px">
+
+                                                <option value="0" disabled>Seleccionar Cliente</option>
+
+                                            </select>
+
+                                        </div>
+                                    </div>
+
                                 </div>
                                 <div>
                                     <button type="submit" class="btn btn-danger float-left"><i class="fa fa-file fa-1x"></i> Generar PDF</button>
@@ -366,6 +460,173 @@
     });
 </script>
 
+<script type="text/javascript">
+    var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+    $(document).ready(function(){
+        $('#cliente_id_2').select2({
+            placeholder: "Selecccione Cliente",
+            allowClear: true,
+            ajax:{
+                url:"{{ route('getClienteInforme') }}",
+                type: 'post',
+                dataType: 'json',
+                delay: 200,
+                data: function(params){
+                    return{
+                        _token: CSRF_TOKEN,
+                        search:params.term
+                    }
+                },
+                processResults: function(response){
+                    return{
+                        results: response
+                    }
+                },
+                cache: true
+            }
+        });
+    });
+</script>
+
+<script type="text/javascript">
+    var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+    $(document).ready(function(){
+        $('#cliente_id_3').select2({
+            placeholder: "Selecccione Cliente",
+            allowClear: true,
+            ajax:{
+                url:"{{ route('getClienteInforme') }}",
+                type: 'post',
+                dataType: 'json',
+                delay: 200,
+                data: function(params){
+                    return{
+                        _token: CSRF_TOKEN,
+                        search:params.term
+                    }
+                },
+                processResults: function(response){
+                    return{
+                        results: response
+                    }
+                },
+                cache: true
+            }
+        });
+    });
+</script>
+
+<script type="text/javascript">
+    var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+    $(document).ready(function(){
+        $('#cliente_id_4').select2({
+            placeholder: "Selecccione Cliente",
+            allowClear: true,
+            ajax:{
+                url:"{{ route('getClienteInforme') }}",
+                type: 'post',
+                dataType: 'json',
+                delay: 200,
+                data: function(params){
+                    return{
+                        _token: CSRF_TOKEN,
+                        search:params.term
+                    }
+                },
+                processResults: function(response){
+                    return{
+                        results: response
+                    }
+                },
+                cache: true
+            }
+        });
+    });
+</script>
+
+<script type="text/javascript">
+var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+$(document).ready(function() {
+    $('#proveedor_id').select2({
+        placeholder: "Seleccione Proveedor",
+        allowClear: true,
+        ajax: {
+            url: "{{route('getProveedores') }}",
+            type: 'post',
+            dataType: 'json',
+            delay: 100,
+            data: function(params) {
+                return {
+                    _token: CSRF_TOKEN,
+                    search: params.term
+                }
+            },
+            processResults: function(response) {
+                return {
+                    results: response
+                }
+            },
+            cache: true
+        }
+    });
+});
+</script>
+
+<script type="text/javascript">
+var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+$(document).ready(function() {
+    $('#proveedor_id_2').select2({
+        placeholder: "Seleccione Proveedor",
+        allowClear: true,
+        ajax: {
+            url: "{{route('getProveedores') }}",
+            type: 'post',
+            dataType: 'json',
+            delay: 100,
+            data: function(params) {
+                return {
+                    _token: CSRF_TOKEN,
+                    search: params.term
+                }
+            },
+            processResults: function(response) {
+                return {
+                    results: response
+                }
+            },
+            cache: true
+        }
+    });
+});
+</script>
+
+<script type="text/javascript">
+var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+$(document).ready(function() {
+    $('#proveedor_id_3').select2({
+        placeholder: "Seleccione Proveedor",
+        allowClear: true,
+        ajax: {
+            url: "{{route('getProveedores') }}",
+            type: 'post',
+            dataType: 'json',
+            delay: 100,
+            data: function(params) {
+                return {
+                    _token: CSRF_TOKEN,
+                    search: params.term
+                }
+            },
+            processResults: function(response) {
+                return {
+                    results: response
+                }
+            },
+            cache: true
+        }
+    });
+});
+</script>
 
 <script type="text/javascript">
         var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');

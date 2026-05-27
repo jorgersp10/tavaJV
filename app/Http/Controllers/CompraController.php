@@ -510,7 +510,7 @@ class CompraController extends Controller
                     $pago_compra->pago_est = "P";
                     $pago_compra->saldo = $diferencia;
                 }
-                $pago_compra->fec_pag = $now;
+                $pago_compra->fec_pag = $request->filled('fec_pag') ? $request->fec_pag : $now;
                 $pago_compra->usuario_id = auth()->user()->id;
 
                 $pago_compra->save();

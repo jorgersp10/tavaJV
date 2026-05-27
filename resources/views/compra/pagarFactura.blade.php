@@ -65,6 +65,10 @@
                             <div class="col-sm-3">
                                 <input readonly="readonly" type="text" value="Gs. {{number_format(($saldo_pagar), 0, ",", ".")}}" class="form-control">
                             </div>
+                            <label for="fec_pag" class="col-sm-2 col-form-label">Fecha Pago</label>
+                            <div class="col-sm-3">
+                                <input type="date" id="fec_pag" name="fec_pag" class="form-control">
+                            </div>
                         </div>
 
                         <div class="row mb-4">

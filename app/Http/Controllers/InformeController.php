@@ -330,10 +330,10 @@ class InformeController extends Controller
 
     public function reporteDetallePDF(Request $request)
     {
-        //dd($request);
+       // dd($request);
         $date1 = $request->fecha1;
         $date2 = $request->fecha2;
-        $cliente = $request->cliente_id;
+        $cliente = $request->cliente_id_2;
         //$producto=$request->producto_id;
         //dd($request);
         //Consulta de Inmuebles
@@ -350,12 +350,11 @@ class InformeController extends Controller
             'v.contable','v.nro_recibo');
 
         //VERIFICA SI TRAE CLIENTE
-        if (empty($request->cliente_id)) {
+        if (empty($cliente)) {
             $cliente = null;
         } else {
-            $cliente = $request->cliente_id;
-            $pagos = $pagos->where('c.cliente_id', '=', $request->cliente_id);
-
+            $cliente = $request->cliente_id_2;
+            $pagos = $pagos->where('c.cliente_id', '=', $request->cliente_id_2);
         }
         //dd($facturas);
        
@@ -407,7 +406,9 @@ class InformeController extends Controller
             $ventas = $ventas->where('v.cliente_id', '=', $request->cliente_id);
 
         }
-        
+        if ($request->estado_pago != "T") {
+            $ventas = $ventas->where('v.estado_pago', '=', $request->estado_pago);
+        }
 
         if ($date1 == null && $date2 == null) {
 
@@ -451,6 +452,12 @@ class InformeController extends Controller
             ->select('v.id', 'v.fact_nro', 'v.iva5', 'v.iva10', 'v.ivaTotal', 'v.exenta', 'v.fecha',
                 'v.total', 'v.estado', 'c.nombre','v.contable','v.nro_recibo')
             ->where('v.estado', '=', "0");
+         if (empty($request->cliente_id_3)) {
+            $cliente = null;
+        } else {
+            $cliente = $request->cliente_id_3;
+            $ventas = $ventas->where('v.cliente_id', '=', $request->cliente_id_3);
+        }
 
         if ($date1 == null && $date2 == null) {
 
@@ -493,6 +500,12 @@ class InformeController extends Controller
             ->select('com.id', 'com.fact_compra', 'com.ivaTotal as iva', 'com.fecha',
                 'com.total', 'com.estado', 'p.nombre')
             ->where('com.estado', '=', "0");
+        if (empty($request->proveedor_id)) {
+            $proveedor = null;
+        } else {
+            $proveedor = $request->proveedor_id;
+            $compras = $compras->where('com.proveedor_id', '=', $request->proveedor_id);
+        }
 
         if ($date1 == null && $date2 == null) {
 
@@ -592,6 +605,12 @@ class InformeController extends Controller
             ->where('com.estado', '=', "0")
             ->where('com.estado_pago', '=', "P");
 
+        if (empty($request->proveedor_id_3)) {
+            $proveedor = null;
+        } else {
+            $proveedor = $request->proveedor_id_3;
+            $compras = $compras->where('com.proveedor_id', '=', $request->proveedor_id_3);
+        }
         if ($date1 == null && $date2 == null) {
 
             $compras = $compras->orderBy('com.id', 'asc');
@@ -691,6 +710,13 @@ class InformeController extends Controller
                 'pc.total_pag','pc.pago_est','pc.id',
                 'total_pagch','total_pagtd', 'total_pagtc', 'total_pagtr', 'total_pagf')
             ->where('com.estado', '=', "0");
+
+        if (empty($request->proveedor_id_2)) {
+            $proveedor = null;
+        } else {
+            $proveedor = $request->proveedor_id_2;
+            $compras = $compras->where('com.proveedor_id', '=', $request->proveedor_id_2);
+        }
 
         if ($date1 == null && $date2 == null) {
 
@@ -876,6 +902,13 @@ class InformeController extends Controller
              DB::raw('sum(total_cuota) as total'),
              DB::raw('sum(p.capital) as total_pag'))
             ->where('cdet.estado_cuota', '=', "P");
+
+        if(empty($request->cliente_id_4)){
+            $cliente = null;    
+        }else{
+            $cliente = $request->cliente_id_4;
+            $cuotas = $cuotas->where('c.cliente_id', '=', $request->cliente_id_4);
+        }
 
         if ($date1 == null && $date2 == null) {
 
