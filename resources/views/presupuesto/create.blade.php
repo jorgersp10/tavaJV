@@ -12,7 +12,7 @@
 @section('content')
 @component('components.breadcrumb')
         @slot('li_1') Tables @endslot
-        @slot('title') A&M INOX - HIERROS @endslot
+        @slot('title') LABPROF GROUP @endslot
     @endcomponent
 <main class="main">
             <!-- Breadcrumb -->
@@ -21,13 +21,16 @@
                 <div class="card">
                     <div class="card-header">
 
-                       <h2>Presupuesto</h2><br/>                     
+                       <h2>Nota de Presupuesto</h2><br/>                     
                        @if(session()->has('msj'))
                             <div class="alert alert-danger" role="alert">{{session('msj')}}</div>    
                         @endif
                         @if(session()->has('msj2'))
                             <div class="alert alert-success" role="alert">{{session('msj2')}}</div>    
                         @endif
+
+                         <button type="button" class="btn btn-primary waves-effect waves-light" data-bs-toggle="modal"
+                        data-bs-target="#abrirmodal">Agregar Clientes</button>
                    
                     </div>
 
@@ -47,12 +50,40 @@
                                 
                                 </div>
                             </div>
-                            <!-- <div class="col-md-4">
-                                <label class="col-md-5 form-control-label" for="precio">N° Factura</label>
+                            <div class="col-sm-3">
+                                <label class="col-md-4 form-control-label" for="precio">Empresa</label>
+                                <select class="form-control" name="empresa_id" id="empresa_id">                                     
+                                    <option value="0" disabled>Seleccione</option>
+                                    
+                                    @foreach($empresas as $e)
+                                        <option value="{{$e->id}}">{{$e->nombre}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-sm-2">
+                                <label class="col-md-4 form-control-label" for="vendedor_id">Vendedor</label>
+                                <select class="form-control" name="vendedor_id" id="vendedor_id">
+                                    <option value="0">Seleccione</option>
+                                    @foreach($vendedores as $v)
+                                        <option value="{{$v->id}}">{{$v->name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">                            
+                            <div class="col-md-4">
+                                <label class="col-md-5 form-control-label" for="precio">Nro Presupuesto</label>
                                 <div class="mb-3">
-                                    <input type="text" id="fact_nro" name="fact_nro" class="form-control" placeholder="Ingrese nro de factura" required>
+                                    <input type="text" id="fact_nro" name="fact_nro" class="form-control" value="{{$nro_presupuesto}}" readonly>
+                                        <small id="presupuesto-msg" class="fs-5"></small>
                                 </div>
-                            </div> -->
+                            </div>
+                            <div class="col-md-3">
+                                <label class="col-md-3 form-control-label" for="cantidad">Fecha</label>
+                                <div class="mb-3">
+                                    <input type="date" id="fecha" name="fecha" class="form-control" required>
+                                </div>
+                            </div>
                         </div>
                         <div class="form-group row border">
                             <div class="col-md-5">  
@@ -64,9 +95,10 @@
 
                                     </select>
                                 </div>
+                                
                             </div>
-                            <!-- <div class="col-md-4">
-                                <label class="col-md-6 form-control-label" for="documento">Tipo Factura</label>
+                            <div class="col-md-3">
+                                <label class="col-md-4 form-control-label" for="documento">Tipo Factura</label>
                                 
                                 <div class="mb-3">
                                 
@@ -78,6 +110,20 @@
 
                                     </select>
                                 
+                                </div>
+                            </div>
+                        </div>
+                         <div class="form-group row">
+                            <div class="col-md-6">
+                                <label class="col-md-3 form-control-label" for="cantidad">Servicio</label>
+                                <div class="mb-3">
+                                    <input type="text" id="servicio" name="servicio" class="form-control" placeholder="Ingrese el servicio/producto">
+                                </div>
+                            </div>
+                            <!-- <div class="col-md-3"> 
+                            <label class="col-md-3 form-control-label" for="precio"></label> 
+                                <div class="mb-3">                 
+                                    <button type="button" id="agregar_servicio" class="btn btn-primary"><i class="fa fa-plus fa-1x"></i> Agregar detalle Serv.</button>
                                 </div>
                             </div> -->
                         </div>
@@ -94,30 +140,61 @@
                                     <input type="text" id="precio" name="precio" class="form-control number" placeholder="Ingrese precio">
                                 </div>
                             </div>
-                            <div class="col-md-3"> 
+                            <div class="col-md-3">
+                                <div class="mb-3">
+                                    <input readonly type="hidden" id="veri_stock" name="veri_stock" class="form-control">
+                                </div>
+                            </div>
+                            <!-- <div class="col-md-3"> 
                             <label class="col-md-3 form-control-label" for="precio"></label> 
                                 <div class="mb-3">                 
-                                    <button type="button" id="agregar" class="btn btn-primary"><i class="fa fa-plus fa-1x"></i> Agregar detalle</button>
+                                    <button type="button" id="agregar" class="btn btn-primary"><i class="fa fa-plus fa-1x"></i> Agregar detalle Prod.</button>
+                                </div>
+                            </div> -->
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                <label class="col-md-3 form-control-label" for="cantidad">Precio Min.</label>
+                                <div class="mb-3">
+                                    <input readonly type="text" id="precio_min" name="precio_min" class="form-control" placeholder="Precio mínimo">
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="col-md-3 form-control-label" for="precio">Precio Max</label>
+                                <div class="mb-3">
+                                    <input readonly type="text" id="precio_max" name="precio_max" class="form-control" placeholder="Precio máximo">
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="col-md-3 form-control-label" for="precio">Stock</label>
+                                <div class="mb-3">
+                                    <input readonly type="text" id="stock" name="stock" class="form-control" placeholder="Stock">
+                                </div>
+                            </div>
+                            <div hidden class="col-md-3">
+                                <label class="col-md-3 form-control-label" for="precio">IVA</label>
+                                <div class="mb-3">
+                                    <input readonly type="text" id="iva" name="iva" class="form-control" placeholder="Iva">
                                 </div>
                             </div>
                         </div>
                         <div class="form-group row">
-                            <div class="col-md-4">
-                                <label class="col-md-3 form-control-label" for="cantidad">Precio Min.</label>
-                                <div class="mb-3">
-                                    <input readonly type="number" id="precio_min" name="precio_min" class="form-control" placeholder="Precio mínimo">
+                            <div class="col-md-3"> 
+                            <label class="col-md-3 form-control-label" for="precio"></label> 
+                                <div class="mb-3">                 
+                                    <button type="button" id="agregar_servicio" class="btn btn-primary"><i class="fa fa-plus fa-1x"></i> Agregar detalle Servicio.</button>
                                 </div>
                             </div>
-                            <div class="col-md-4">
-                                <label class="col-md-3 form-control-label" for="precio">Precio Max</label>
-                                <div class="mb-3">
-                                    <input readonly type="number" id="precio_max" name="precio_max" class="form-control" placeholder="Precio máximo">
+                            <div class="col-md-3"> 
+                            <label class="col-md-3 form-control-label" for="precio"></label> 
+                                <div class="mb-3">                 
+                                    <button type="button" id="agregar" class="btn btn-primary"><i class="fa fa-plus fa-1x"></i> Agregar detalle Producto.</button>
                                 </div>
                             </div>
                         </div><br>
                         <div class="form-group row border">
 
-                            <h3>Detalles</h3>
+                            <h3>Detalle del presupuesto</h3>
 
                             <div class="table-responsive col-md-12">
                                 <table id="detalles" class="table table-bordered table-striped table-sm">
@@ -143,7 +220,17 @@
 
                                         <tr>
                                             <th colspan="4"><p align="right">TOTAL IVA (10%):</p></th>
+                                            <th><p align="right"><span id="total_iva_10_html">Gs. 0.00</span><input type="hidden" name="total_iva_10" id="total_iva_10"></p></th>
+                                        </tr>
+
+                                        <tr>
+                                            <th colspan="4"><p align="right">TOTAL IVA:</p></th>
                                             <th><p align="right"><span id="total_iva_html">Gs. 0.00</span><input type="hidden" name="total_iva" id="total_iva"></p></th>
+                                        </tr>
+
+                                        <tr>
+                                            <th colspan="4"><p align="right">TOTAL EXENTA:</p></th>
+                                            <th><p align="right"><span id="total_exenta_html">Gs. 0.00</span><input type="hidden" name="total_exenta" id="total_exenta"></p></th>
                                         </tr>
 
                                         <tr>
@@ -163,7 +250,7 @@
                             <div class="col-md">
                             <input type="hidden" name="_token" value="{{csrf_token()}}">
                             
-                                <button type="submit" class="btn btn-success"><i class="fa fa-save fa-2x"></i> Registrar</button>
+                                <button type="submit" class="btn btn-success"><i class="fa fa-save fa-2x"></i> Guardar Presupuesto</button>
                             
                             </div>
 
@@ -174,6 +261,32 @@
                 <!-- Fin ejemplo de tabla Listado -->
             </div>
 
+
+            <!-- MODAL PARA AGREGAR CLIENTE -->
+             <!--Inicio del modal agregar-->
+            <div class="modal fade" id="abrirmodal" tabindex="-1" role="dialog"
+                    aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalScrollableTitle">Nuevo Cliente</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form action="{{route('cliente.store')}}" method="post" class="form-horizontal">
+                                <input type="hidden" id="lugar" name="lugar"  value=3>
+                                    {{csrf_field()}}
+                                    
+                                    @include('cliente.form')
+
+                                </form>                                    
+                            </div>
+                            
+                        </div><!-- /.modal-content -->
+                    </div><!-- /.modal-dialog -->
+                </div><!-- /.modal -->
+
 </main>
 
 @endsection
@@ -181,47 +294,46 @@
 @section('script')
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-
-    <script>
-        const number = document.querySelector('.number');
-        function formatNumber (n) {
-            n = String(n).replace(/\D/g, "");
-        return n === '' ? n : Number(n).toLocaleString();
-        }
-        number.addEventListener('keyup', (e) => {
-            const element = e.target;
-            const value = element.value;
-        element.value = formatNumber(value);
+<script>
+    const number = document.querySelector('.number');
+    function formatNumber (n) {
+        n = String(n).replace(/\D/g, "");
+    return n === '' ? n : Number(n).toLocaleString();
+    }
+    number.addEventListener('keyup', (e) => {
+        const element = e.target;
+        const value = element.value;
+    element.value = formatNumber(value);
+    });
+</script>
+<script type="text/javascript">
+    var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+    $(document).ready(function(){
+        $('#cliente_id').select2({
+            ajax:{
+                url:"{{route('getClientesVentas') }}",
+                type: 'post',
+                dataType: 'json',
+                delay: 100,
+                data: function(params){
+                    return{
+                        _token: CSRF_TOKEN,
+                        search:params.term
+                    }
+                },
+                processResults: function(response){
+                    return{
+                        results: response
+                    }
+                },
+                cache: true
+            }
         });
-    </script>
-    <script type="text/javascript">
-        var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
-        $(document).ready(function(){
-            $('#cliente_id').select2({
-                ajax:{
-                    url:"{{route('getClientesVentas') }}",
-                    type: 'post',
-                    dataType: 'json',
-                    delay: 100,
-                    data: function(params){
-                        return{
-                            _token: CSRF_TOKEN,
-                            search:params.term
-                        }
-                    },
-                    processResults: function(response){
-                        return{
-                            results: response
-                        }
-                    },
-                    cache: true
-                }
-            });
-        });
-    
-    </script>
+    });
 
-    <script type="text/javascript">
+</script>
+
+<script type="text/javascript">
         var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
         $(document).ready(function(){
             $('#producto_id').select2({
@@ -248,6 +360,7 @@
     
     </script>
 
+
 <script>
      
      $(document).ready(function(){
@@ -261,7 +374,13 @@
    
       var cont=0;
       total=0;
+      total_iva5=0;
+      total_iva10=0;
+      total_exenta=0;
       subtotal=[];
+      iva_linea=[];
+      iva_aux=[];
+      exenta=0;
       totalVista=0;
       subtotalVista=[];
 
@@ -276,20 +395,48 @@
              stockpro = $("#stock").val();
              precio_minimo= $("#precio_min").val();
              precio_maximo= $("#precio_max").val();
-             iva=11;
-
-             if(stockpro < cantidad){
-                Swal.fire({
-                type: 'error',
-                title: 'Cuidado',
-                text: 'Stock insuficiente!'
-                })
-                
-            }
+             iva=$("#iva").val();
+             veri_stock=$("#veri_stock").val();
+             if(veri_stock == 0)
+             {
+                if(parseFloat(stockpro) < parseFloat(cantidad)){
+    
+                    Swal.fire({
+                    type: 'error',
+                    title: 'Cuidado',
+                    text: 'Stock insuficiente!'
+                    })
+                    
+                }
+             }
+             
              
             if(producto_id !="" && cantidad!="" && cantidad>0 && precio!="" && precio!="null"){
                precioFinal = precio.replaceAll(".","");
                subtotal[cont]=Math.round(cantidad*precioFinal);
+               if(iva == 11)
+               {
+                    console.log("entro 10");
+                    iva_linea[cont] = Math.round(subtotal[cont] / iva);
+                    total_iva10 = total_iva10 + iva_linea[cont];
+                    iva_aux[cont] = iva;
+
+               }
+               if(iva == 21)
+               {
+                    console.log("entro 5");
+                    iva_linea[cont]= Math.round(subtotal[cont] / iva);
+                    total_iva5 = total_iva5 + iva_linea[cont];
+                    iva_aux[cont] = iva;
+               }
+
+               if(iva == 1)
+               {
+                    console.log("entro EXT");
+                    iva_linea[cont]= 0;
+                    total_exenta = total_exenta + subtotal[cont];
+                    iva_aux[cont] = iva;
+               }
                total= total+subtotal[cont];
 
                //funcion para agregar separador de miles
@@ -316,10 +463,11 @@
                //totales para la vista
                subtotalVista[cont]=formatNumber.new(subtotal[cont]);
                totalVista=formatNumber.new (total);
-               console.log(subtotalVista[cont]);
+         
                 
-               var fila= '<tr class="selected" id="fila'+cont+'"><td><button type="button" class="btn btn-danger btn-sm" onclick="eliminar('+cont+');"><i class="fa fa-times fa-2x"></i></button></td> <td><input type="hidden" name="producto_id[]" value="'+producto_id+'">'+producto+'</td> <td><input readonly type="text" id="precio[]" name="precio[]"  value="'+precio+'"> </td>  <td><input readonly type="number" name="cantidad[]" value="'+cantidad+'"> </td> <td>Gs. '+subtotalVista[cont]+' </td></tr>';
+               var fila= '<tr class="selected" id="fila'+cont+'"><td><button type="button" class="btn btn-danger btn-sm" onclick="eliminar('+cont+');"><i class="fa fa-times fa-2x"></i></button></td> <td><input type="hidden" name="producto_id[]" value="'+producto_id+'">'+producto+'</td> <input type="hidden" name="servicio[]" value="'+producto+'"> <td><input readonly type="text" id="precio[]" name="precio[]"  value="'+precio+'"> </td>  <td><input readonly type="number" name="cantidad[]" value="'+cantidad+'"> </td> <td hidden ><input hidden readonly type="number" name="tipo_iva[]" value="'+iva+'"> </td> <td>Gs. '+subtotalVista[cont]+' </td></tr>';
                cont++;
+        
                limpiar();
                totales();
                
@@ -331,7 +479,7 @@
                    Swal.fire({
                    type: 'error',
                    //title: 'Oops...',
-                   text: 'Rellene todos los campos del detalle de la venta',
+                   text: 'Rellene todos los campos del Detalle del presupuesto',
                    
                    })
                
@@ -372,12 +520,24 @@
    
            $("#total_html").html("Gs. " + formatNumber.new(total));
            $("#total").html("Gs. " + total);
-           total_iva=Math.round(total/iva);
-           total_pagar=total;
+           //IVA 10
+           $("#total_iva_10_html").html("Gs. " + formatNumber.new(total_iva10));
+           $("#total_iva_10").val(total_iva10);
+           //IVA 5
+           $("#total_iva_5_html").html("Gs. " + formatNumber.new(total_iva5));
+           $("#total_iva_5").val(total_iva5);
+            //TOTAL IVA
+            total_iva = total_iva10 + total_iva5;
            $("#total_iva_html").html("Gs. " + formatNumber.new(total_iva));
-           $("#total_pagar_html").html("Gs. " + formatNumber.new(total_pagar));
-           $("#total_pagar").val(total_pagar);
            $("#total_iva").val(total_iva);
+
+           $("#total_exenta_html").html("Gs. " + formatNumber.new(total_exenta));
+           $("#total_exenta").val(total_exenta);
+
+           $("#total_pagar_html").html("Gs. " + formatNumber.new(total));
+           $("#total_pagar").val(total);
+
+           
            
         }
    
@@ -398,11 +558,53 @@
         function eliminar(index){
    
            total=total-subtotal[index];
-           total_iva= Math.round(total/iva);
+           //total_iva= total*11/100;
+           
+
+           console.log("ivalineaBorrado= "+iva_linea[index]);
+     
+
            total_pagar_html = total;
           
            $("#total_html").html("Gs." + total);
+
+           
+
+           if(iva_aux[index]==21)
+           {
+                total_iva5=(total_iva5) - iva_linea[index];
+                $("#total_iva_5_html").html("Gs." + total_iva5);
+                $("#total_iva_5").val(total_iva5);
+
+           }
+
+           if(iva_aux[index]==11)
+           {
+                total_iva10=(total_iva10) - iva_linea[index];
+                $("#total_iva_10_html").html("Gs." + total_iva10);
+                $("#total_iva_10").val(total_iva10);
+
+           }
+
+           if(iva_aux[index]==1)
+           {
+                total_exenta=(total_exenta) - subtotal[index];
+                $("#total_exenta_html").html("Gs." + total_exenta);
+                $("#total_exenta").val(total_exenta);
+
+           }
+
+           total_iva=total_iva - iva_linea[index];
            $("#total_iva_html").html("Gs." + total_iva);
+           $("#total_iva").val(total_iva);
+
+           console.log("Total_iva= "+total_iva);
+           console.log("iva5= "+total_iva5);
+           console.log("iva10= "+total_iva10);
+           console.log("EXENTA= "+total_exenta);
+           console.log("***************");
+           
+
            $("#total_pagar_html").html("Gs." + total_pagar_html);
            $("#total_pagar").val(total_pagar_html);
           
@@ -410,11 +612,248 @@
            evaluar();
         }
    
-    </script>
+</script>
+
+<script>
+     
+     $(document).ready(function(){
+        
+        $("#agregar_servicio").click(function(){
+   
+            agregar_servicio();
+        });
+   
+     });
+   
+      var cont=0;
+      total=0;
+      total_iva5=0;
+      total_iva10=0;
+      total_exenta=0;
+      subtotal=[];
+      iva_linea=[];
+      iva_aux=[];
+      exenta=0;
+      totalVista=0;
+      subtotalVista=[];
+
+      $("#guardar").hide();
+   
+        function agregar_servicio(){
+   
+             producto_id= 1;
+             producto= $("#servicio").val();
+             cantidad= $("#cantidad").val();
+             precio= $("#precio").val();
+             stockpro = $("#stock").val();
+             precio_minimo= $("#precio_min").val();
+             precio_maximo= $("#precio_max").val();
+             iva=11;
+             console.log("servicio: "+iva);
+            if(producto_id !="" && cantidad!="" && cantidad>0 && precio!="" && precio!="null"){
+               precioFinal = precio.replaceAll(".","");
+               subtotal[cont]=Math.round(cantidad*precioFinal);
+               if(iva == 11)
+               {
+                    console.log("entro 10");
+                    iva_linea[cont] = Math.round(subtotal[cont] / iva);
+                    total_iva10 = total_iva10 + iva_linea[cont];
+                    iva_aux[cont] = iva;
+
+               }
+               if(iva == 6)
+               {
+                    console.log("entro 5");
+                    iva_linea[cont]= Math.round(subtotal[cont] / iva);
+                    total_iva5 = total_iva5 + iva_linea[cont];
+                    iva_aux[cont] = iva;
+               }
+
+               if(iva == 1)
+               {
+                    console.log("entro EXT");
+                    iva_linea[cont]= 0;
+                    total_exenta = total_exenta + subtotal[cont];
+                    iva_aux[cont] = iva;
+               }
+               total= total+subtotal[cont];
+
+               //funcion para agregar separador de miles
+               var formatNumber = {
+                    separador: ".", // separador para los miles
+                    sepDecimal: ',', // separador para los decimales
+                    formatear:function (num){
+                    num +='';
+                    var splitStr = num.split('.');
+                    var splitLeft = splitStr[0];
+                    //var splitRight = splitStr.length > 1 ? this.sepDecimal + splitStr[1] : '';
+                    var regx = /(\d+)(\d{3})/;
+                    while (regx.test(splitLeft)) {
+                    splitLeft = splitLeft.replace(regx, '$1' + this.separador + '$2');
+                    }
+                    return this.simbol + splitLeft;
+                    },
+                    new:function(num, simbol){
+                    this.simbol = simbol ||'';
+                    return this.formatear(num);
+                    }
+                }
+
+               //totales para la vista
+               subtotalVista[cont]=formatNumber.new(subtotal[cont]);
+               totalVista=formatNumber.new (total);
+                
+               var fila= '<tr class="selected" id="fila'+cont+'"><td><button type="button" class="btn btn-danger btn-sm" onclick="eliminar('+cont+');"><i class="fa fa-times fa-2x"></i></button></td> <td><input type="hidden" name="producto_id[]" value="'+producto_id+'">'+producto+'</td><input type="hidden" name="servicio[]" value="'+producto+'"> <td><input readonly type="text" id="precio[]" name="precio[]"  value="'+precio+'"> </td>  <td><input readonly type="number" name="cantidad[]" value="'+cantidad+'"> <td hidden ><input hidden readonly type="number" name="tipo_iva[]" value="'+iva+'"> </td> </td> <td>Gs. '+subtotalVista[cont]+' </td></tr>';
+               cont++;
+               limpiar();
+               totales();
+               
+               evaluar();
+               $('#detalles').append(fila);
+               
+               }else{
+   
+                   Swal.fire({
+                   type: 'error',
+                   //title: 'Oops...',
+                   text: 'Rellene todos los campos del Detalle del presupuesto',
+                   
+                   })
+               
+               }
+            
+        }
+   
+       
+        function limpiar(){
+           
+           $("#cantidad").val("");
+           $("#precio").val("");
+           
+   
+        }
+   
+        function totales(){
+
+            var formatNumber = {
+                    separador: ".", // separador para los miles
+                    sepDecimal: ',', // separador para los decimales
+                    formatear:function (num){
+                    num +='';
+                    var splitStr = num.split('.');
+                    var splitLeft = splitStr[0];
+                    //var splitRight = splitStr.length > 1 ? this.sepDecimal + splitStr[1] : '';
+                    var regx = /(\d+)(\d{3})/;
+                    while (regx.test(splitLeft)) {
+                    splitLeft = splitLeft.replace(regx, '$1' + this.separador + '$2');
+                    }
+                    return this.simbol + splitLeft;
+                    },
+                    new:function(num, simbol){
+                    this.simbol = simbol ||'';
+                    return this.formatear(num);
+                    }
+                }
+   
+           $("#total_html").html("Gs. " + formatNumber.new(total));
+           $("#total").html("Gs. " + total);
+           //IVA 10
+           $("#total_iva_10_html").html("Gs. " + formatNumber.new(total_iva10));
+           $("#total_iva_10").val(total_iva10);
+           //IVA 5
+           $("#total_iva_5_html").html("Gs. " + formatNumber.new(total_iva5));
+           $("#total_iva_5").val(total_iva5);
+            //TOTAL IVA
+            total_iva = total_iva10 + total_iva5;
+           $("#total_iva_html").html("Gs. " + formatNumber.new(total_iva));
+           $("#total_iva").val(total_iva);
+
+           $("#total_exenta_html").html("Gs. " + formatNumber.new(total_exenta));
+           $("#total_exenta").val(total_exenta);
+
+           $("#total_pagar_html").html("Gs. " + formatNumber.new(total));
+           $("#total_pagar").val(total);
+           
+        }
+   
+   
+   
+        function evaluar(){
+   
+            if(total>0){
+   
+              $("#guardar").show();
+   
+            } else{
+                 
+              $("#guardar").hide();
+            }
+        }
+   
+        function eliminar(index){
+   
+            total=total-subtotal[index];
+           //total_iva= total*11/100;
+           
+
+           console.log("ivalineaBorrado= "+iva_linea[index]);
+     
+
+           total_pagar_html = total;
+          
+           $("#total_html").html("Gs." + total);
+
+           
+
+           if(iva_aux[index]==6)
+           {
+                total_iva5=(total_iva5) - iva_linea[index];
+                $("#total_iva_5_html").html("Gs." + total_iva5);
+                $("#total_iva_5").val(total_iva5);
+
+           }
+
+           if(iva_aux[index]==11)
+           {
+                total_iva10=(total_iva10) - iva_linea[index];
+                $("#total_iva_10_html").html("Gs." + total_iva10);
+                $("#total_iva_10").val(total_iva10);
+
+           }
+
+           if(iva_aux[index]==1)
+           {
+                total_exenta=(total_exenta) - subtotal[index];
+                $("#total_exenta_html").html("Gs." + total_exenta);
+                $("#total_exenta").val(total_exenta);
+
+           }
+
+           total_iva=total_iva - iva_linea[index];
+           $("#total_iva_html").html("Gs." + total_iva);
+           $("#total_iva").val(total_iva);
+
+           console.log("Total_iva= "+total_iva);
+           console.log("iva5= "+total_iva5);
+           console.log("iva10= "+total_iva10);
+           console.log("EXENTA= "+total_exenta);
+           console.log("***************");
+           
+
+           $("#total_pagar_html").html("Gs." + total_pagar_html);
+           $("#total_pagar").val(total_pagar_html);
+          
+           $("#fila" + index).remove();
+           evaluar();
+        }
+   
+</script>
+
+
 
 <script>
 
-function obtenerPrecio()//funcion para enviar datos de la empresa al form
+    function obtenerPrecio()//funcion para enviar datos de la empresa al form
     {
         
         var producto_id = document.getElementById("producto_id").value //aca nos trae el id del medidor para consultar  
@@ -455,12 +894,12 @@ function obtenerPrecio()//funcion para enviar datos de la empresa al form
                         }
                     //let numero1 =  (data.var[0].precio_venta).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 
-                    console.log(formatNumber.new(data.var[0].precio_venta));
                     document.getElementById("precio").value = formatNumber.new(data.var[0].precio_venta);
                     document.getElementById("precio_min").value = formatNumber.new(data.var[0].precio_min);
                     document.getElementById("precio_max").value = formatNumber.new(data.var[0].precio_max);
                     document.getElementById("stock").value = data.var[0].stock;
-                    
+                    document.getElementById("veri_stock").value = (data.var[0].veri_stock);
+                    document.getElementById("iva").value = data.var[0].iva;
                     
                 }
                 

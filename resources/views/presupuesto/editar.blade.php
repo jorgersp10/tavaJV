@@ -54,6 +54,38 @@
                                 
                                 </div>
                             </div>
+                            <div class="col-sm-3">
+                                <label class="col-md-4 form-control-label" for="precio">Empresa</label>
+                                <select class="form-control" name="empresa_id" id="empresa_id">
+                                    <option value="0" disabled>Seleccione</option>
+                                    @foreach($empresas as $e)
+                                        <option value="{{$e->id}}" @if($ventas->empresa_id == $e->id) selected @endif>{{$e->nombre}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-sm-2">
+                                <label class="col-md-4 form-control-label" for="vendedor_id">Vendedor</label>
+                                <select class="form-control" name="vendedor_id" id="vendedor_id">
+                                    <option value="0">Seleccione</option>
+                                    @foreach($vendedores as $v)
+                                        <option value="{{$v->id}}" @if($ventas->vendedor_id == $v->id) selected @endif>{{$v->name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-md-4">
+                                <label class="col-md-5 form-control-label" for="precio">Nro Presupuesto</label>
+                                <div class="mb-3">
+                                    <input type="text" id="fact_nro" name="fact_nro" class="form-control" value="{{$ventas->fact_nro}}" readonly>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="col-md-3 form-control-label" for="cantidad">Fecha</label>
+                                <div class="mb-3">
+                                    <input type="date" id="fecha" name="fecha" class="form-control" value="{{$ventas->fecha}}" required>
+                                </div>
+                            </div>
                         </div>
                         <div class="form-group row border">
                             <div class="col-md-5">  
@@ -304,7 +336,7 @@
                totalVista=formatNumber.new (total);
                console.log(subtotalVista[cont]);
                 
-               var fila= '<tr class="selected" id="fila'+cont+'"><td><button type="button" class="btn btn-danger btn-sm" onclick="eliminar('+cont+');"><i class="fa fa-times fa-2x"></i></button></td> <td><input type="hidden" name="producto_id[]" value="'+producto_id+'">'+producto+'</td> <td><input style="width:100px" readonly type="text" id="precio[]" name="precio[]"  value="'+precio+'"> </td>  <td><input style="width:60px" readonly type="number" name="cantidad[]" value="'+cantidad+'"> </td> <td>Gs. '+subtotalVista[cont]+' </td></tr>';
+               var fila= '<tr class="selected" id="fila'+cont+'"><td><button type="button" class="btn btn-danger btn-sm" onclick="eliminar('+cont+');"><i class="fa fa-times fa-2x"></i></button></td> <td><input type="hidden" name="producto_id[]" value="'+producto_id+'">'+producto+'</td><input type="hidden" name="servicio[]" value="'+producto+'"> <td><input style="width:100px" readonly type="text" id="precio[]" name="precio[]"  value="'+precio+'"> </td>  <td><input style="width:60px" readonly type="number" name="cantidad[]" value="'+cantidad+'"> </td><td hidden><input hidden readonly type="number" name="tipo_iva[]" value="'+iva+'"></td> <td>Gs. '+subtotalVista[cont]+' </td></tr>';
                cont++;
                limpiar();
                totales();

@@ -98,7 +98,7 @@
                             <form id="factura-form" action="{{url('factura')}}" method="GET" style="display: none;">
                                 {{csrf_field()}} 
                                 </form> 
-                        </li>
+                        </li>                        
                         <!-- <li><a class="waves-effect"  href="{{url('comprobante')}}" onclick="event.preventDefault(); document.getElementById('comprobante-form').submit();">    
                             <span>Recibos de cobro</span></a>
                             <form id="comprobante-form" action="{{url('comprobante')}}" method="GET" style="display: none;">
@@ -115,6 +115,22 @@
                      
                 </li>
 
+                <li>
+                    <a href="javascript: void(0);" class="has-arrow waves-effect">
+                    <i class="dripicons-cart"></i> 
+                        <span key="t-invoices">Presupuestos</span>
+                    </a>
+                    <ul class="sub-menu" aria-expanded="false">
+                        <li><a class="waves-effect"  href="{{url('presupuesto')}}" onclick="event.preventDefault(); document.getElementById('presupuesto-form').submit();">
+                            <span>Lista de Presupuestos</span></a>
+                            <form id="presupuesto-form" action="{{url('presupuesto')}}" method="GET" style="display: none;">
+                                {{csrf_field()}} 
+                            </form> 
+                        </li>
+    
+                    </ul>
+                     
+                </li>
                 <li>
                     <a href="javascript: void(0);" class="has-arrow waves-effect">
                     <i class="fas fa-shopping-basket"></i> 
@@ -154,15 +170,6 @@
                     </ul>
                      
                 </li>
-
-                <!-- <li class="nav-item">
-                    <a class="waves-effect"  href="{{url('presupuesto')}}" onclick="event.preventDefault(); document.getElementById('presupuesto-form').submit();">
-                    <i class="fas fa-file-invoice-dollar"></i> 
-                    <span>Presupuestos</span></a>
-                    <form id="presupuesto-form" action="{{url('presupuesto')}}" method="GET" style="display: none;">
-                        {{csrf_field()}} 
-                        </form> 
-                </li> -->
 
                 <!-- <li>
                     <a href="javascript: void(0);" class="has-arrow waves-effect">
@@ -269,7 +276,12 @@
                                 {{csrf_field()}} 
                                 </form> 
                         </li> 
-                        
+                        <li><a class="waves-effect"  href="{{url('vendedor')}}" onclick="event.preventDefault(); document.getElementById('vendedor-form').submit();">
+                            <span>Vendedores</span></a>
+                            <form id="vendedor-form" action="{{url('vendedor')}}" method="GET" style="display: none;">
+                                {{csrf_field()}} 
+                            </form> 
+                        </li>
                         <li class="nav-item">
                             <a class="waves-effect" href="{{url('empresa')}}" onclick="event.preventDefault(); document.getElementById('empresa-form').submit();">
                             <span>Empresas</span></a>

@@ -98,6 +98,8 @@ class ClienteController extends Controller
             $cliente->save();
             if($request->lugar == 2)
                 return Redirect::to("cliente")->with('msj2', 'CLIENTE REGISTRADO');
+            elseif($request->lugar == 3)
+                return Redirect::to("presupuesto/create")->with('msj2', 'CLIENTE REGISTRADO');
             else
                 return Redirect::to("factura/create")->with('msj2', 'CLIENTE REGISTRADO');
         }

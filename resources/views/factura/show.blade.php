@@ -75,6 +75,15 @@
                                 @endforeach  
                             </select>
                         </div>
+                        <label class="col-md-2 form-control-label"><b>Vendedor:</b></label>
+                        <div class="col-md-3">
+                            <select class="form-control" name="vendedor_id" id="vendedor_id">
+                                <option value="0">Seleccione</option>
+                                @foreach($vendedores as $v)
+                                    <option value="{{$v->id}}" @if($ventas->vendedor_id == $v->id) selected @endif>{{$v->name}}</option>
+                                @endforeach
+                            </select>
+                        </div>
                     </div>
 
             <div class="form-group row border">

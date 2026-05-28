@@ -74,6 +74,15 @@
                                     @endforeach
                                 </select>
                             </div>
+                            <div class="col-sm-2">
+                                <label class="col-md-4 form-control-label" for="vendedor_id">Vendedor</label>
+                                <select class="form-control" name="vendedor_id" id="vendedor_id">
+                                    <option value="0">Seleccione</option>
+                                    @foreach($vendedores as $v)
+                                        <option value="{{$v->id}}">{{$v->name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                         </div>
                         <div class="form-group row">                            
                             <div class="col-md-4">

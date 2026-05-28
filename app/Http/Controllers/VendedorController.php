@@ -5,143 +5,121 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Vendedor;
 use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\Storage;
-use Carbon\Carbon;
-use DateTime;
 use DB;
 
 class VendedorController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index(request $request)
+    public function index(Request $request)
     {
-        if($request){
+        $sql = trim($request->get('buscarTexto'));
+        $sql = str_replace(" ", "%", $sql);
 
-            $sql=trim($request->get('buscarTexto'));
-            $vendedores=DB::table('vendedores')
-            ->join('sucursales','vendedores.idsucursal','=','sucursales.id')
-            ->select('vendedores.id','vendedores.name','vendedores.email','vendedores.num_documento','vendedores.direccion',
-            'vendedores.telefono','vendedores.condicion','vendedores.dob as fecha_nacimiento',
-            'sucursales.sucursal as sucursal','sucursales.id as idsucursal')
-            ->where('vendedores.name','LIKE','%'.$sql.'%')
-            ->orwhere('vendedores.num_documento','LIKE','%'.$sql.'%')
-            ->orderBy('vendedores.id','desc')
-            ->paginate(10);
+        $vendedores = DB::table('vendedores as v')
+        ->leftJoin('users as u', 'u.id', '=', 'v.user_id')
+        ->select('v.id','v.name as nombre','v.num_documento','v.telefono','v.email','v.condicion as estado',
+        'u.name as usuario','u.email as usuario_email')
+        ->where('v.name','LIKE','%'.$sql.'%')
+        ->orWhere('v.num_documento','LIKE','%'.$sql.'%')
+        ->orWhere('u.name','LIKE','%'.$sql.'%')
+        ->orderBy('v.id','desc')
+        ->paginate(10);
 
-            /*listar los sucursales en ventana modal*/
-            $sucursales=DB::table('sucursales')
-            ->select('id','sucursal')
-            ->where('id','!=','0')->get(); 
-
-            return view('vendedor.index',["vendedores"=>$vendedores,"sucursales"=>$sucursales,"buscarTexto"=>$sql]);
-        
-            //return $vendedores;
-        }
+        return view('vendedor.index',["vendedores"=>$vendedores,"buscarTexto"=>$sql]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
-        //
+        $usuarios = $this->usuariosDisponibles();
+
+        return view('vendedor.create',["usuarios"=>$usuarios]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        $vendedor= new Vendedor();
-        $vendedor->name = strtoupper($request->nombre);
-        $vendedor->num_documento = $request->num_documento;
-        $vendedor->direccion = $request->direccion;
-        $vendedor->telefono = $request->telefono;
-        $vendedor->email = $request->email;        
-        $vendedor->dob = $request->fecha_nacimiento;
-        $vendedor->idsucursal = $request->idsucursal;
-        $vendedor->condicion = '1'; 
+        $docu = str_replace(".", "", $request->num_documento);
 
+        if ($docu != null) {
+            $yaexistedocumento = DB::select('select name,num_documento from vendedores where num_documento = ?',[$docu]);
+            if ($yaexistedocumento != null) {
+                return back()->with('msj', 'Vendedor: '.$yaexistedocumento[0]->name.' - '.$yaexistedocumento[0]->num_documento.' ya existe');
+            }
+        }
+
+        if ($request->user_id != 0) {
+            $usuarioAsignado = Vendedor::where('user_id', $request->user_id)->first();
+            if ($usuarioAsignado != null) {
+                return back()->with('msj', 'El usuario seleccionado ya esta vinculado a otro vendedor');
+            }
+        }
+
+        $vendedor = new Vendedor();
+        $vendedor->name = strtoupper($request->nombre);
+        $vendedor->num_documento = $docu;
+        $vendedor->telefono = $request->telefono;
+        $vendedor->email = $request->email;
+        $vendedor->direccion = strtoupper($request->direccion);
+        $vendedor->user_id = $request->user_id == 0 ? null : $request->user_id;
+        $vendedor->condicion = $request->estado ?? 1;
         $vendedor->save();
-        return Redirect::to("vendedor");
+
+        return Redirect::to("vendedor")->with('msj2', 'VENDEDOR REGISTRADO');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
-        //
+        $vendedor = Vendedor::findOrFail($id);
+        $usuarios = $this->usuariosDisponibles($vendedor->user_id);
+
+        return view('vendedor.show',["vendedor"=>$vendedor,"usuarios"=>$usuarios]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request)
     {
-        $vendedor= Vendedor::findOrFail($request->id_vendedor);
-        $vendedor->name = strtoupper($request->nombre);
-        $vendedor->num_documento = $request->num_documento;
-        $vendedor->direccion = $request->direccion;
-        $vendedor->telefono = $request->telefono;
-        $vendedor->email = $request->email;        
-        $vendedor->dob = $request->fecha_nacimiento;
-        $vendedor->idsucursal = $request->idsucursal;
-        $vendedor->condicion = '1'; 
+        $vendedor = Vendedor::findOrFail($request->id_vendedor);
+        $docu = str_replace(".", "", $request->num_documento);
 
+        if ($request->user_id != 0) {
+            $usuarioAsignado = Vendedor::where('user_id', $request->user_id)
+            ->where('id', '<>', $vendedor->id)
+            ->first();
+
+            if ($usuarioAsignado != null) {
+                return back()->with('msj', 'El usuario seleccionado ya esta vinculado a otro vendedor');
+            }
+        }
+
+        $vendedor->name = strtoupper($request->nombre);
+        $vendedor->num_documento = $docu;
+        $vendedor->telefono = $request->telefono;
+        $vendedor->email = $request->email;
+        $vendedor->direccion = strtoupper($request->direccion);
+        $vendedor->user_id = $request->user_id == 0 ? null : $request->user_id;
+        $vendedor->condicion = $request->estado ?? 1;
         $vendedor->save();
-        return Redirect::to("vendedor");
+
+        return Redirect::to("vendedor")->with('msj2', 'VENDEDOR ACTUALIZADO');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Request $request)
+    public function destroy($id)
     {
-        $vendedor= Vendedor::findOrFail($request->id_vendedor);
-         
-         if($vendedor->condicion=="1"){
+        Vendedor::destroy($id);
 
-                $vendedor->condicion= '0';
-                $vendedor->save();
-                return Redirect::to("vendedor");
+        return Redirect::to("vendedor")->with('msj2', 'VENDEDOR ELIMINADO');
+    }
 
-           }else{
+    private function usuariosDisponibles($usuarioActual = null)
+    {
+        return DB::table('users as u')
+        ->leftJoin('vendedores as v', 'v.user_id', '=', 'u.id')
+        ->select('u.id','u.name','u.email')
+        ->where(function ($query) use ($usuarioActual) {
+            $query->whereNull('v.id');
 
-                $vendedor->condicion= '1';
-                $vendedor->save();
-                return Redirect::to("vendedor");
-
+            if ($usuarioActual != null) {
+                $query->orWhere('u.id', '=', $usuarioActual);
             }
+        })
+        ->orderBy('u.name','asc')
+        ->get();
     }
 }

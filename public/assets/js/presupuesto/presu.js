@@ -22,7 +22,7 @@ subtotalVista = [];
                     cantidad = od.cantidad;
                     precio = od.precio;
             
-                    iva = 11;
+                    iva = od.tipo_iva || 11;
         
                     if (producto_id != "" && cantidad != "" && cantidad > 0 && precio != "")
                     {
@@ -63,9 +63,9 @@ subtotalVista = [];
                         '"><td><button type="button" class="btn btn-danger btn-sm" onclick="eliminar(' + cont +
                         ');"><i class="fa fa-times fa-2x"></i></button></td> <td><input type="hidden" name="producto_id[]" value="' +
                         producto_id + '">' +ArtCode+ ' - '+ productoNombre +
-                        '</td> <td><input readonly style="width:100px" type="text" id="precio[]" name="precio[]"  value="' + precio +
+                        '</td><input type="hidden" name="servicio[]" value="' + od.producto + '"> <td><input readonly style="width:100px" type="text" id="precio[]" name="precio[]"  value="' + precio +
                         '"> </td> <td><input readonly type="number" style="width:60px" name="cantidad[]" value="' + cantidad + '"> </td> <td>Gs. ' +
-                        subtotalVista[cont] + ' </td></tr>';
+                        subtotalVista[cont] + ' <input hidden readonly type="number" name="tipo_iva[]" value="' + iva + '"></td></tr>';
                     }
                     cont++;
                     limpiar();

@@ -145,8 +145,14 @@ class FacturaController extends Controller
         ->orderBy('e.id','asc')
         ->get();
 
+        $vendedores=DB::table('vendedores as v')
+        ->select('v.id','v.name')
+        ->where('v.condicion','=',1)
+        ->orderBy('v.name','asc')
+        ->get();
+
         return view('factura.create',["clientes"=>$clientes,"productos"=>$productos,
-        "nro_factura"=>$nro_factura,"empresas"=>$empresas]);
+        "nro_factura"=>$nro_factura,"empresas"=>$empresas,"vendedores"=>$vendedores]);
 
    }
 
@@ -264,6 +270,7 @@ class FacturaController extends Controller
                         $venta = new Venta();
                         $venta->cliente_id = $request->cliente_id;
                         $venta->empresa_id = $request->empresa_id;
+                        $venta->vendedor_id = $request->vendedor_id == 0 ? null : $request->vendedor_id;
                         if(($request->fact_nro == null) || ($request->fact_nro== 0))
                             $venta->fact_nro = 0;
                         else
@@ -380,15 +387,16 @@ class FacturaController extends Controller
         ->join('ventas_det as vdet','v.id','=','vdet.venta_id')
         ->join('clientes as c','c.id','=','v.cliente_id')
         ->join('empresas as e','e.id','=','v.empresa_id')
+        ->leftJoin('vendedores as ven','ven.id','=','v.vendedor_id')
         ->select('v.id','v.fact_nro','v.fecha','v.total','c.nombre','v.iva5',
         'v.iva10','v.ivaTotal','v.exenta','v.tipo_factura','c.num_documento',
-        'v.empresa_id','e.nombre as empresa','v.timbrado'
+        'v.empresa_id','e.nombre as empresa','v.timbrado','v.vendedor_id','ven.name as vendedor'
         ,DB::raw('sum(vdet.cantidad*precio) as total'))
         ->where('v.id','=',$id)
         ->orderBy('v.id', 'desc')
         ->groupBy('v.id','v.fact_nro','v.fecha','v.total','c.nombre','v.iva5',
         'v.iva10','v.ivaTotal','v.exenta','v.tipo_factura','c.num_documento',
-        'v.empresa_id','e.nombre','v.timbrado')
+        'v.empresa_id','e.nombre','v.timbrado','v.vendedor_id','ven.name')
         ->first();
         //dd($ventas);
         /*mostrar detalles*/
@@ -402,11 +410,18 @@ class FacturaController extends Controller
         ->select('e.id','e.nombre')
         ->get();
 
+        $vendedores=DB::table('vendedores as v')
+        ->select('v.id','v.name')
+        ->where('v.condicion','=',1)
+        ->orWhere('v.id','=',$ventas->vendedor_id)
+        ->orderBy('v.name','asc')
+        ->get();
+
         $empresa_id=Empresa::findOrFail($ventas->empresa_id);
         $empresa_id = $empresa_id->id;
         
         return view('factura.show',['ventas' => $ventas,'detalles' =>$detalles,
-        'empresas' =>$empresas, 'empresa_id' =>$empresa_id]);
+        'empresas' =>$empresas, 'empresa_id' =>$empresa_id,'vendedores'=>$vendedores]);
     }
 
     public function imprimirTicket($id)
@@ -672,6 +687,7 @@ class FacturaController extends Controller
         $venta = Venta::findOrFail($request->id_venta);
         $venta->fecha = $request->fecha;
         $venta->empresa_id = $request->empresa_id;
+        $venta->vendedor_id = $request->vendedor_id == 0 ? null : $request->vendedor_id;
         $venta->timbrado = $request->timbrado;
         $venta->save();
 
@@ -683,6 +699,7 @@ class FacturaController extends Controller
             $venta->fact_nro = $request->fact_nro;
             $venta->fecha = $request->fecha;
             $venta->empresa_id = $request->empresa_id;
+            $venta->vendedor_id = $request->vendedor_id == 0 ? null : $request->vendedor_id;
             $venta->save();
 
             return Redirect::to('factura')->with('msj2', 'FACTURA ACTUALIZADA');

@@ -51,9 +51,10 @@
                                         <tr>    
                                             <th  data-priority="1">Borrar</th> 
                                             <th  data-priority="1">Editar</th> 
+                                            <th  data-priority="1">Facturar</th>
                                             <th  data-priority="1">Ver Detalle</th>
                                             <th  data-priority="1">Fecha</th>
-                                            <th  data-priority="1">Fact. N°</th>
+                                            <th  data-priority="1">Presupuesto Nro</th>
                                             <th  data-priority="1">Cliente</th>
                                             <th  data-priority="1">Total</th>
                                             <th  data-priority="1">Iva</th>                                            
@@ -78,6 +79,40 @@
                                                             <i class="fa fa-edit fa-1x"></i> Editar
                                                         </button>
                                                     </a>
+                                                </td>
+                                                <td>
+                                                    @if($ven->estado == 0)
+                                                        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#facturarModal-{{$ven->id}}">
+                                                            <i class="fa fa-check fa-1x"></i> Facturar
+                                                        </button>
+
+                                                        <div class="modal fade" id="facturarModal-{{$ven->id}}" tabindex="-1" aria-hidden="true">
+                                                            <div class="modal-dialog">
+                                                                <div class="modal-content">
+                                                                    <form method="POST" action="{{ route('presupuesto.facturar.post', $ven->id) }}">
+                                                                        @csrf
+                                                                        <div class="modal-header">
+                                                                            <h5 class="modal-title">Facturar Presupuesto {{$ven->fact_nro}}</h5>
+                                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                        </div>
+                                                                        <div class="modal-body">
+                                                                            <p>¿Está seguro que desea facturar este presupuesto?</p>
+                                                                            <div class="mb-3">
+                                                                                <label for="fact_nro_{{$ven->id}}" class="form-label">Número de factura (opcional)</label>
+                                                                                <input type="text" name="fact_nro" id="fact_nro_{{$ven->id}}" class="form-control" placeholder="Ingrese número de factura o deje vacío para asignar automáticamente">
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="modal-footer">
+                                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                                                            <button type="submit" class="btn btn-primary">Confirmar y Facturar</button>
+                                                                        </div>
+                                                                    </form>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    @else
+                                                        <span class="badge bg-success">Facturado</span>
+                                                    @endif
                                                 </td>
                                                 <td>                                     
                                                     <a href="{{URL::action('App\Http\Controllers\PresupuestoController@show', $ven->id)}}">

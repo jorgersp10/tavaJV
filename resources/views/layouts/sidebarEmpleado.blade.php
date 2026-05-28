@@ -92,6 +92,12 @@
                                 {{csrf_field()}} 
                                 </form> 
                         </li>
+                        <li><a class="waves-effect"  href="{{url('presupuesto')}}" onclick="event.preventDefault(); document.getElementById('presupuesto-form').submit();">
+                            <span>Presupuestos</span></a>
+                            <form id="presupuesto-form" action="{{url('presupuesto')}}" method="GET" style="display: none;">
+                                {{csrf_field()}} 
+                            </form> 
+                        </li>
                         <!-- <li><a class="waves-effect"  href="{{url('comprobante')}}" onclick="event.preventDefault(); document.getElementById('comprobante-form').submit();">    
                             <span>Recibos de cobro</span></a>
                             <form id="comprobante-form" action="{{url('comprobante')}}" method="GET" style="display: none;">
@@ -141,15 +147,6 @@
                     </ul>
                      
                 </li>
-
-                <!-- <li class="nav-item">
-                    <a class="waves-effect"  href="{{url('presupuesto')}}" onclick="event.preventDefault(); document.getElementById('presupuesto-form').submit();">
-                    <i class="fas fa-file-invoice-dollar"></i> 
-                    <span>Presupuestos</span></a>
-                    <form id="presupuesto-form" action="{{url('presupuesto')}}" method="GET" style="display: none;">
-                        {{csrf_field()}} 
-                        </form> 
-                </li> -->
 
                 <!-- <li>
                     <a href="javascript: void(0);" class="has-arrow waves-effect">

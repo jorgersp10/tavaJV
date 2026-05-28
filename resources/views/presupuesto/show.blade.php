@@ -44,7 +44,7 @@
                 </div>
 
                 <div class="form-group row">
-                    <label class="col-md-2 form-control-label"><b>Factura N°:</b></label>
+                    <label class="col-md-2 form-control-label"><b>Presupuesto Nro:</b></label>
                     <div class="col-md-3">
                             <p>{{$ventas->fact_nro}}</p>     
                     </div>
