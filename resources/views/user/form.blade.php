@@ -84,6 +84,16 @@
             </div>
         </div>
     </div>     
+    <div class="row mb-4">
+        <label for="horizontal-firstname-input" class="col-sm-3 col-form-label">Empresas</label>
+        <div class="col-sm-9">
+            <select name="empresas[]" id="empresas" class="form-control" multiple required>
+                @foreach($empresas as $empresa)
+                    <option value="{{$empresa->id}}">{{$empresa->nombre}}</option>
+                @endforeach
+            </select>
+        </div>
+    </div>
     <div class="form-group row">
                 <label class="col-md-3 form-control-label" for="password">Password</label>
                 <div class="col-md-9">

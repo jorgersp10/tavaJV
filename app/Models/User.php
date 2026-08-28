@@ -33,6 +33,11 @@ class User extends Authenticatable
         return $this->belongsTo('App\Models\Sucursal','id');
     }
 
+    public function empresas()
+    {
+        return $this->belongsToMany(\App\Models\Empresa::class, 'empresa_user', 'user_id', 'empresa_id');
+    }
+
 
     /**
      * The attributes that should be hidden for arrays.

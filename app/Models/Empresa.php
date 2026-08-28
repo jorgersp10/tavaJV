@@ -14,4 +14,9 @@ class Empresa extends Model
     protected $fillable=[
         'empresas'];
 
+    public function users()
+    {
+        return $this->belongsToMany(\App\Models\User::class, 'empresa_user', 'empresa_id', 'user_id');
+    }
+
 }

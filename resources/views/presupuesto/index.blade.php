@@ -11,7 +11,7 @@
 @section('content')
 @component('components.breadcrumb')
         @slot('li_1') Tables @endslot
-        @slot('title') A&M INOX - HIERROS @endslot
+        @slot('title') LABPROF GROUP @endslot
     @endcomponent
 <main class="main">
             <!-- Breadcrumb -->

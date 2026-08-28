@@ -111,12 +111,12 @@
                 <div  class="Column" style="text-align:center;" id="timbrado">
                 <img src="{{ public_path('assets/images/inox.jpg') }}" alt="logo" height="60px" width="150px" /><br>
                     <strong style="text-align:center;">Tomas R. Pereira C/ Avda Francia</strong> <br>
-                    <strong style="text-align:center;">Tel.: (071) 207615 - (0986) 755440</strong> <br>
+                    <strong style="text-align:center;">Tel.: (071) 207615 - (0986) 720700</strong> <br>
                     <strong style="text-align:center;">Encarnacion - Paraguay</strong> <br>
                 </div>
                 <div class="Column" id="ruc">
                     
-                        <strong>RUC:</strong> 6698924-8<br>
+                        <strong>RUC:</strong> 80110138-7/3412536-1<br>
                         <strong>PRESUPUESTO</strong><br>
                         <strong>NRO:</strong> {{$ventas[0]->fact_nro}}<br>
                     
@@ -212,12 +212,12 @@
                 <div  class="Column" style="text-align:center;" id="timbrado">
                 <img src="{{ public_path('assets/images/inox.jpg') }}" alt="logo" height="60px" width="150px" /><br>
                     <strong style="text-align:center;">Tomas R. Pereira C/ Avda Francia</strong> <br>
-                    <strong style="text-align:center;" >Tel.: (071) 207615 - (0986) 755440</strong> <br>
+                    <strong style="text-align:center;" >Tel.: (071) 207615 - (0986) 720700</strong> <br>
                     <strong style="text-align:center;">Encarnacion - Paraguay</strong> <br>
                 </div>
                 <div class="Column" id="ruc">
                     
-                        <strong>RUC:</strong> 6698924-8<br>
+                        <strong>RUC:</strong> 80110138-7/3412536-1<br>
                         <strong>PRESUPUESTO</strong><br>
                         <strong>NRO:</strong> {{$ventas[0]->fact_nro}}<br>
                     
