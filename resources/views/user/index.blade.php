@@ -46,6 +46,7 @@
                                             <th  data-priority="1">Nombre</th>
                                             <th  data-priority="1">Documento</th>
                                             <th  data-priority="1">Sucursal</th> 
+                                            <th  data-priority="1">Empresas</th>
                                             <th  data-priority="1">Rol</th> 
                                             <th  data-priority="1">Email</th>
                                             <th  data-priority="1">Dirección</th>
@@ -87,6 +88,13 @@
                                                 <td>{{$user->name}}</td>
                                                 <td>{{$user->num_documento}}</td>
                                                 <td>{{$user->sucursal}}</td>
+                                                <td>
+                                                    @if(isset($empresasPorUsuario[$user->id_user]))
+                                                        {{ implode(', ', $empresasPorUsuario[$user->id_user]->pluck('nombre')->toArray()) }}
+                                                    @else
+                                                        -
+                                                    @endif
+                                                </td>
                                                 <td>{{$user->rol}}</td>
                                                 <td>{{$user->email}}</td>
                                                 <td>{{$user->direccion}}</td>
@@ -205,4 +213,13 @@
     <script src="{{ URL::asset('/assets/libs/pdfmake/pdfmake.min.js') }}"></script>
     <!-- Datatable init js -->
     <script src="{{ URL::asset('/assets/js/pages/datatables.init.js') }}"></script>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function(){
+            if(document.querySelector('#empresas')){
+                $('#empresas').select2({width: '100%'});
+            }
+        });
+    </script>
 @endsection

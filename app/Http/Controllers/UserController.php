@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
 use DB;
+use App\Models\Empresa;
 
 class UserController extends Controller
 {
@@ -42,7 +43,17 @@ class UserController extends Controller
             ->select('id','sucursal')
             ->where('id','!=','0')->get(); 
 
-            return view('user.index',["usuarios"=>$usuarios,"roles"=>$roles,"sucursales"=>$sucursales,"buscarTexto"=>$sql]);
+            $empresas = Empresa::select('id','nombre')->get();
+            // Obtener empresas asociadas a los usuarios paginados
+            $userIds = collect($usuarios->items())->pluck('id_user')->toArray();
+            $empresasPorUsuario = DB::table('empresa_user')
+                ->join('empresas','empresa_user.empresa_id','=','empresas.id')
+                ->whereIn('empresa_user.user_id', $userIds)
+                ->select('empresa_user.user_id','empresas.nombre')
+                ->get()
+                ->groupBy('user_id');
+
+            return view('user.index',["usuarios"=>$usuarios,"roles"=>$roles,"sucursales"=>$sucursales,"empresas"=>$empresas,"buscarTexto"=>$sql,'empresasPorUsuario'=>$empresasPorUsuario]);
         
             //return $usuarios;
         }
@@ -66,6 +77,14 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'nombre' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|min:6',
+            'empresas' => 'required|array|min:1',
+            'empresas.*' => 'exists:empresas,id',
+        ]);
+
         $user= new User();
         $user->name = strtoupper($request->nombre);
         $user->num_documento = $request->num_documento;
@@ -79,6 +98,8 @@ class UserController extends Controller
         $user->condicion = '1'; 
 
         $user->save();
+        // sincronizar empresas (ya validado)
+        $user->empresas()->sync($request->empresas ?? []);
         return Redirect::to("user");
     }
 
@@ -109,7 +130,9 @@ class UserController extends Controller
         ->select('id','sucursal')
         ->get(); 
 
-        return view('user.show',["usuarios"=>$usuarios,"roles"=>$roles,"sucursales"=>$sucursales]);
+        $empresas = Empresa::select('id','nombre')->get();
+        $userEmpresas = DB::table('empresa_user')->where('user_id', $id)->pluck('empresa_id')->toArray();
+        return view('user.show',["usuarios"=>$usuarios,"roles"=>$roles,"sucursales"=>$sucursales,"empresas"=>$empresas,'userEmpresas'=>$userEmpresas]);
     
     }
 
@@ -133,6 +156,13 @@ class UserController extends Controller
      */
     public function update(Request $request)
     {
+        $request->validate([
+            'nombre' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email,'.$request->id_user,
+            'empresas' => 'required|array|min:1',
+            'empresas.*' => 'exists:empresas,id',
+        ]);
+
         //dd($request->cambiar);
         $user= User::findOrFail($request->id_user);
         $user->name = strtoupper($request->nombre);
@@ -149,6 +179,7 @@ class UserController extends Controller
         $user->condicion = '1'; 
 
         $user->save();
+        $user->empresas()->sync($request->empresas ?? []);
         return Redirect::to("user");
     }
 

@@ -101,6 +101,17 @@
                         </div>
 
                         <div class="row mb-4">
+                            <label for="horizontal-firstname-input" class="col-sm-2 col-form-label">Empresas</label>
+                            <div class="col-sm-6">
+                                <select id="empresas" name="empresas[]" class="form-control" multiple required>
+                                    @foreach($empresas as $emp)
+                                        <option value="{{$emp->id}}" {{ in_array($emp->id, $userEmpresas ?? []) ? 'selected' : '' }}>{{$emp->nombre}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row mb-4">
                             <label for="horizontal-firstname-input" class="col-sm-2 col-form-label">Password</label>
                             <div class="col-sm-4">
                                 <input type="password" id="password" name="password" class="form-control" placeholder="Ingrese el password">
@@ -154,4 +165,16 @@
     
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function(){
+            if(document.querySelector('#empresas')){
+                $('#empresas').select2({width: '100%'});
+            }
+            // set selected values from hidden array
+            var selected = {!! json_encode($userEmpresas ?? []) !!};
+            if(selected.length && document.querySelector('#empresas')){
+                $('#empresas').val(selected).trigger('change');
+            }
+        });
+    </script>
 @endsection
