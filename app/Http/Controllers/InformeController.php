@@ -347,7 +347,9 @@ class InformeController extends Controller
                 'p.cuota', 'p.capital as capital', 'p.moratorio', 'p.punitorio', 'p.iva', 'p.total_pag as totalpagado',
                 'p.fec_vto', 'u.id as user_id', 'cli.nombre as nombreCliente', 'cli.num_documento','cli.digito', 'total_pagch',
                 'total_pagtd', 'total_pagtc', 'total_pagtr', 'total_pagf', 'v.fact_nro', 'v.total as total_fact',
-            'v.contable','v.nro_recibo');
+            'v.contable','v.nro_recibo','v.estado as venta_estado');
+
+        $pagos = $pagos->where('v.estado', '=', '0');
 
         //VERIFICA SI TRAE CLIENTE
         if (empty($cliente)) {
@@ -396,8 +398,7 @@ class InformeController extends Controller
         $ventas = DB::table('ventas as v')
             ->join('clientes as c', 'c.id', '=', 'v.cliente_id')
             ->select('v.id', 'v.fact_nro', 'v.iva5', 'v.iva10', 'v.ivaTotal', 'v.exenta', 'v.fecha',
-                'v.total', 'v.estado', 'c.nombre','v.contable','v.nro_recibo','v.estado_pago')
-            ->where('v.estado', '=', "0");
+                'v.total', 'v.estado', 'c.nombre','v.contable','v.nro_recibo','v.estado_pago');
 
         if (empty($request->cliente_id)) {
             $cliente = null;
@@ -498,8 +499,7 @@ class InformeController extends Controller
         $compras = DB::table('compras as com')
             ->join('proveedores as p', 'p.id', '=', 'com.proveedor_id')
             ->select('com.id', 'com.fact_compra', 'com.ivaTotal as iva', 'com.fecha',
-                'com.total', 'com.estado', 'p.nombre')
-            ->where('com.estado', '=', "0");
+                'com.total', 'com.estado', 'p.nombre');
         if (empty($request->proveedor_id)) {
             $proveedor = null;
         } else {
@@ -532,8 +532,7 @@ class InformeController extends Controller
         $gastos = DB::table('gastos as com')
             ->join('proveedores as p', 'p.id', '=', 'com.proveedor_id')
             ->select('com.id', 'com.fact_compra', 'com.iva', 'com.fecha',
-                'com.total', 'com.estado', 'p.nombre')
-            ->where('com.estado', '=', "0");
+                'com.total', 'com.estado', 'p.nombre');
 
         if ($date1 == null && $date2 == null) {
 
@@ -1021,7 +1020,6 @@ class InformeController extends Controller
             ->join('proveedores as p', 'p.id', '=', 'com.proveedor_id')
             ->select('com.id', 'com.fact_compra', 'com.iva', 'com.fecha',
                 'com.total', 'com.estado', 'p.nombre')
-            ->where('com.estado', '=', "0")
             ->where('com.contable', '=', "1");
 
         if ($date1 == null && $date2 == null) {
@@ -1050,7 +1048,6 @@ class InformeController extends Controller
             ->join('proveedores as p', 'p.id', '=', 'com.proveedor_id')
             ->select('com.id', 'com.fact_compra', 'com.iva', 'com.fecha',
                 'com.total', 'com.estado', 'p.nombre')
-            ->where('com.estado', '=', "0")
             ->where('com.contable', '=', "1");
 
         if ($date1 == null && $date2 == null) {

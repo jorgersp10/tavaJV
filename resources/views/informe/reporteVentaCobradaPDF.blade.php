@@ -199,6 +199,7 @@
                     <tr>
                         <th>Cliente</th>
                         <th>Fact. / Rec N°</th>
+                        <th>Estado</th>
                         <th>Fecha Pag.</th>
                         <th>Total Factura</th>
                         <th>Efectivo</th>
@@ -218,6 +219,7 @@
                         @else
                             <td><strong>Rec N°: {{$p->nro_recibo}}</strong></td> 
                         @endif
+                        <td>@if($p->venta_estado == 1) ANULADO @else ACTIVO @endif</td>
                         <td>{{ date('d-m-Y', strtotime($p->fec_vto)) }}</td>
                         <td>Gs. {{number_format(($p->total_fact), 0, ",", ".")}}</td> 
                         <td>Gs. {{number_format(($p->total_pagf), 0, ",", ".")}}</td>
@@ -241,6 +243,7 @@
                 @endforeach
                 <tr id="totales">
                     <td>TOTALES</td>
+                    <td></td>
                     <td></td>
                     <td></td>
                     <td>Gs. {{number_format(($total_venta), 0, ",", ".")}}</td>

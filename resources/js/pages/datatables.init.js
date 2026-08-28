@@ -10,9 +10,25 @@ $(document).ready(function() {
     $('#datatable').DataTable();
 
     //Buttons examples
+    var isLandscapeExport = $('#datatable-buttons').data('export-landscape') === true;
     var table = $('#datatable-buttons').DataTable({
         lengthChange: false,
-        buttons: ['copy', 'excel', 'pdf', 'colvis']
+        buttons: isLandscapeExport ? [
+            {
+                extend: 'excelHtml5',
+                text: 'Excel',
+                customize: function (xlsx) {
+                    var worksheet = xlsx.xl.worksheets['sheet1.xml'];
+                    $('worksheet', worksheet).append('<pageSetup orientation="landscape" paperSize="9"/>');
+                }
+            },
+            {
+                extend: 'pdfHtml5',
+                text: 'PDF',
+                orientation: 'landscape',
+                pageSize: 'LEGAL'
+            }
+        ] : ['copy', 'excel', 'pdf', 'colvis']
     });
 
     table.buttons().container()

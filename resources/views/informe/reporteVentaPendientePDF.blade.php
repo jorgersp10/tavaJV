@@ -180,13 +180,19 @@
                         @else
                             <td>Rec N°: {{$v->nro_recibo}}</td> 
                         @endif
-                        <td>{{ date('d-m-Y', strtotime($v->fecha)) }}</td>                             
-                        <td>Gs. {{number_format(($v->ivaTotal), 0, ",", ".")}}</td>
-                        <td>Gs. {{number_format(($v->total), 0, ",", ".")}}</td>                                                                     
+                        <td>{{ date('d-m-Y', strtotime($v->fecha)) }}</td>
+                        @php
+                            $iva_monto = $v->estado == 1 ? 0 : $v->ivaTotal;
+                            $monto_total = $v->estado == 1 ? 0 : $v->total;
+                        @endphp
+                        <td>Gs. {{number_format(($iva_monto), 0, ",", ".")}}</td>
+                        <td>Gs. {{number_format(($monto_total), 0, ",", ".")}}</td>
                     </tr>
                 @php
-                    $total_iva=$total_iva + $v->ivaTotal;
-                    $total_venta=$total_venta + $v->total;
+                    if ($v->estado != 1) {
+                        $total_iva=$total_iva + $v->ivaTotal;
+                        $total_venta=$total_venta + $v->total;
+                    }
                 @endphp
                 </tbody>
             @endforeach       

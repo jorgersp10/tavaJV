@@ -79,7 +79,7 @@
                             @endif
                             <div class="table-rep-plugin">
                                 <div class="table-responsive mb-0" data-pattern="priority-columns">
-                                    <table id="datatable-buttons" class="table table-bordered dt-responsive  nowrap w-100">                                                            
+                                    <table id="datatable-buttons" data-export-landscape="true" class="table table-bordered dt-responsive  nowrap w-100">                                                            
                                         <thead>  
                                             <tr>
                                                 <th data-priority="1">Fecha</th>
@@ -123,24 +123,32 @@
                                                 <td>{{$c->num_documento}}</td>
                                                 @endif
                                                 <td>{{$c->digito}}</td>
-                                                <td>{{$c->grabado10}}</td>
-                                                <td>{{$c->grabado5}}</td>                                                
-                                                <td>{{number_format(($c->iva10), 0, "", "")}}</td>
-                                                <td>{{number_format(($c->iva5), 0, "", "")}}</td>
-                                                <td>{{$c->total_exe}}</td>
-                                                <td>{{number_format(($c->total), 0, "", "")}}</td>
+                                                @php
+                                                    $gravada_10 = $c->estado == 1 ? 0 : $c->grabado10;
+                                                    $gravada_5 = $c->estado == 1 ? 0 : $c->grabado5;
+                                                    $iva_10 = $c->estado == 1 ? 0 : $c->iva10;
+                                                    $iva_5 = $c->estado == 1 ? 0 : $c->iva5;
+                                                    $exenta = $c->estado == 1 ? 0 : $c->total_exe;
+                                                    $total = $c->estado == 1 ? 0 : $c->total;
+                                                @endphp
+                                                <td>{{$gravada_10}}</td>
+                                                <td>{{$gravada_5}}</td>                                                
+                                                <td>{{number_format(($iva_10), 0, "", "")}}</td>
+                                                <td>{{number_format(($iva_5), 0, "", "")}}</td>
+                                                <td>{{$exenta}}</td>
+                                                <td>{{number_format(($total), 0, "", "")}}</td>
                                                 <td>{{$c->moneda}}</td>
                                                 <td>{{$c->condicion}}</td>
                                                 <td>1</td>
-                                                <td>{{$c->observacion}}</td>
+                                                <td>{{ $c->estado == 1 ? 'ANULADO' : $c->observacion }}</td>
                                             
                                                 @php 
-                                                    $total10 = $total10 + $c->grabado10;
-                                                    $total5 = $total5 + $c->grabado5;
-                                                    $total_iva10 = $total_iva10 + $c->iva10;
-                                                    $total_iva5 = $total_iva5 + $c->iva5;
-                                                    $total_exenta =  $total_exenta + $c->total_exe;
-                                                    $total_gral = $total_gral + $c->total;   
+                                                    $total10 = $total10 + $gravada_10;
+                                                    $total5 = $total5 + $gravada_5;
+                                                    $total_iva10 = $total_iva10 + $iva_10;
+                                                    $total_iva5 = $total_iva5 + $iva_5;
+                                                    $total_exenta =  $total_exenta + $exenta;
+                                                    $total_gral = $total_gral + $total;   
                                                 @endphp
                                             </tr>  
                                         @endforeach

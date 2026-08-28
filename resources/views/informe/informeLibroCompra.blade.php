@@ -77,7 +77,7 @@
                             @endif
                             <div class="table-rep-plugin">
                                 <div class="table-responsive mb-0" data-pattern="priority-columns">
-                                    <table id="datatable-buttons" class="table table-bordered dt-responsive  nowrap w-100">                                                            
+                                    <table id="datatable-buttons" data-export-landscape="true" class="table table-bordered dt-responsive  nowrap w-100">                                                            
                                         <thead>  
                                             <tr>
                                                 <th data-priority="1">Fecha</th>

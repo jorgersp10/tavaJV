@@ -170,6 +170,7 @@
                         <th>Fecha</th>
                         <th>Total Iva</th>
                         <th>Total Factura</th>
+                        <th>Estado</th>
                     </tr>
                 </thead>
             @foreach($compras as $com)
@@ -177,13 +178,20 @@
                     <tr>       
                         <td>{{$com->nombre}}</td>                             
                         <td>{{$com->fact_compra}}</td>
-                        <td>{{ date('d-m-Y', strtotime($com->fecha)) }}</td>                             
-                        <td>Gs. {{number_format(($com->iva), 0, ",", ".")}}</td>
-                        <td>Gs. {{number_format(($com->total), 0, ",", ".")}}</td>                                                                     
+                        <td>{{ date('d-m-Y', strtotime($com->fecha)) }}</td>
+                        @php
+                            $iva_monto = $com->estado == 1 ? 0 : $com->iva;
+                            $monto_total = $com->estado == 1 ? 0 : $com->total;
+                        @endphp
+                        <td>Gs. {{number_format(($iva_monto), 0, ",", ".")}}</td>
+                        <td>Gs. {{number_format(($monto_total), 0, ",", ".")}}</td>
+                        <td>{{ $com->estado == 1 ? 'Anulado' : 'Activo' }}</td>
                     </tr>
                 @php
-                    $total_iva=$total_iva + $com->iva;
-                    $total_compra=$total_compra + $com->total;
+                    if ($com->estado != 1) {
+                        $total_iva=$total_iva + $com->iva;
+                        $total_compra=$total_compra + $com->total;
+                    }
                 @endphp
                 </tbody>
             @endforeach       
@@ -192,7 +200,8 @@
                 <td></td>
                 <td></td>                             
                 <td>Gs. {{number_format(($total_iva), 0, ",", ".")}}</td>
-                <td>Gs. {{number_format(($total_compra), 0, ",", ".")}}</td>                                                                     
+                <td>Gs. {{number_format(($total_compra), 0, ",", ".")}}</td>
+                <td></td>
             </tr>   
             </table>
            
@@ -220,6 +229,7 @@
                         <th>Fecha</th>
                         <th>Total Iva</th>
                         <th>Total Factura</th>
+                        <th>Estado</th>
                     </tr>
                 </thead>
             @foreach($gastos as $com)
@@ -227,13 +237,20 @@
                     <tr>       
                         <td>{{$com->nombre}}</td>                             
                         <td>{{$com->fact_compra}}</td>
-                        <td>{{ date('d-m-Y', strtotime($com->fecha)) }}</td>                             
-                        <td>Gs. {{number_format(($com->iva), 0, ",", ".")}}</td>
-                        <td>Gs. {{number_format(($com->total), 0, ",", ".")}}</td>                                                                     
+                        <td>{{ date('d-m-Y', strtotime($com->fecha)) }}</td>
+                        @php
+                            $iva_monto = $com->estado == 1 ? 0 : $com->iva;
+                            $monto_total = $com->estado == 1 ? 0 : $com->total;
+                        @endphp
+                        <td>Gs. {{number_format(($iva_monto), 0, ",", ".")}}</td>
+                        <td>Gs. {{number_format(($monto_total), 0, ",", ".")}}</td>
+                        <td>{{ $com->estado == 1 ? 'Anulado' : 'Activo' }}</td>
                     </tr>
                 @php
-                    $total_iva_gasto=$total_iva_gasto + $com->iva;
-                    $total_gasto=$total_gasto + $com->total;
+                    if ($com->estado != 1) {
+                        $total_iva_gasto=$total_iva_gasto + $com->iva;
+                        $total_gasto=$total_gasto + $com->total;
+                    }
                 @endphp
                 </tbody>
             @endforeach       
@@ -242,7 +259,8 @@
                 <td></td>
                 <td></td>                             
                 <td>Gs. {{number_format(($total_iva_gasto), 0, ",", ".")}}</td>
-                <td>Gs. {{number_format(($total_gasto), 0, ",", ".")}}</td>                                                                     
+                <td>Gs. {{number_format(($total_gasto), 0, ",", ".")}}</td>
+                <td></td>
             </tr>   
             </table>
            
