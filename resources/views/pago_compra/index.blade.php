@@ -48,6 +48,7 @@
                                             <th  data-priority="1">Borrar</th>
                                             <th  data-priority="1">Proveedor</th>
                                             <th  data-priority="1">Fac Nro</th>
+                                            <th  data-priority="1">Recibo Proveedor</th>
                                             <th  data-priority="1">Fecha</th>
                                             <th  data-priority="1">Total</th>
                                             <th  data-priority="1">Total Pag.</th>
@@ -73,6 +74,7 @@
                                                 </td>
                                                 <td>{{$p->nombre}}</td>
                                                 <td>{{$p->fact_compra}}</td>
+                                                <td>{{ $p->nro_recibo_proveedor ?: '-' }}</td>
                                                 <td>{{ date('d-m-Y', strtotime($p->fec_pag)) }}</td>                                                
                                                 <td>{{number_format($p->total, 0, ",", ".")}}</td>
                                                 <td>{{number_format($p->total_pag, 0, ",", ".")}}</td>
