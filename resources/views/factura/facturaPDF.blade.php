@@ -148,8 +148,7 @@
                 @if($ventas[0]->tipo_factura == 0)
                     <strong>****-xx</strong><br>
                 @else
-                    <strong> </strong><br>
-                    <strong>****-xx</strong><br>
+                    <strong style="display:block; margin-left:3cm;">****-xx</strong><br>
                 @endif
                 <strong></strong><br>
                 <strong></strong><br>
@@ -290,8 +289,7 @@
                 @if($ventas[0]->tipo_factura == 0)
                     <strong>****-xx</strong><br>
                 @else
-                    <strong> </strong><br>
-                    <strong>****-xx</strong><br>
+                    <strong style="display:block; margin-left:3cm;">****-xx</strong><br>
                 @endif
                 <strong></strong><br>
                 <strong></strong><br>
@@ -432,8 +430,7 @@
                 @if($ventas[0]->tipo_factura == 0)
                     <strong>****-xx</strong><br>
                 @else
-                    <strong> </strong><br>
-                    <strong>****-xx</strong><br>
+                    <strong style="display:block; margin-left:3cm;">****-xx</strong><br>
                 @endif
                 <strong></strong><br>
                 <strong></strong><br>
