@@ -192,6 +192,28 @@
                                 
                     </tr>
             </table><br>
+            <div id="encabezado">
+                <strong>FORMAS DE PAGO</strong><br>
+                @if($rec[0]->total_pagf > 0)
+                    Efectivo: Gs. {{number_format(($rec[0]->total_pagf), 0, ",", ".")}}<br>
+                @endif
+                @if($rec[0]->total_pagch > 0)
+                    Cheque: Gs. {{number_format(($rec[0]->total_pagch), 0, ",", ".")}}<br>
+                @endif
+                @if($rec[0]->total_pagtc > 0)
+                    Tarjeta de credito: Gs. {{number_format(($rec[0]->total_pagtc), 0, ",", ".")}}<br>
+                @endif
+                @if($rec[0]->total_pagtd > 0)
+                    Tarjeta de debito: Gs. {{number_format(($rec[0]->total_pagtd), 0, ",", ".")}}<br>
+                @endif
+                @if($rec[0]->total_pagtr > 0)
+                    Transferencia: Gs. {{number_format(($rec[0]->total_pagtr), 0, ",", ".")}}
+                    @if($rec[0]->nro_comprobante_transferencia)
+                        - Comprobante: {{$rec[0]->nro_comprobante_transferencia}}
+                    @endif
+                    <br>
+                @endif
+            </div><br>
             <div id="encabezado" class="firma">
                 <address class="mt-2 mt-sm-0">
                     <strong style="text-align:right;">__________________________</strong><br> 
@@ -334,6 +356,28 @@
                         <td>Gs. {{number_format(($rec[0]->saldo), 0, ",", ".")}}</td>
                     </tr>
             </table><br>
+            <div id="encabezado">
+                <strong>FORMAS DE PAGO</strong><br>
+                @if($rec[0]->total_pagf > 0)
+                    Efectivo: Gs. {{number_format(($rec[0]->total_pagf), 0, ",", ".")}}<br>
+                @endif
+                @if($rec[0]->total_pagch > 0)
+                    Cheque: Gs. {{number_format(($rec[0]->total_pagch), 0, ",", ".")}}<br>
+                @endif
+                @if($rec[0]->total_pagtc > 0)
+                    Tarjeta de credito: Gs. {{number_format(($rec[0]->total_pagtc), 0, ",", ".")}}<br>
+                @endif
+                @if($rec[0]->total_pagtd > 0)
+                    Tarjeta de debito: Gs. {{number_format(($rec[0]->total_pagtd), 0, ",", ".")}}<br>
+                @endif
+                @if($rec[0]->total_pagtr > 0)
+                    Transferencia: Gs. {{number_format(($rec[0]->total_pagtr), 0, ",", ".")}}
+                    @if($rec[0]->nro_comprobante_transferencia)
+                        - Comprobante: {{$rec[0]->nro_comprobante_transferencia}}
+                    @endif
+                    <br>
+                @endif
+            </div><br>
             <!-- <div id="encabezado" class="table-responsive">
             <h4>FORMAS DE PAGO</h4>
             <table class="table-borderless alturatabla>

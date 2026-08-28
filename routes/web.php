@@ -184,6 +184,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('reporteDetalle', [InformeController::class, 'reporteDetalle'])->name('reporteDetalle');
     Route::post('reporteDetallePDF', [InformeController::class, 'reporteDetallePDF'])->name('reporteDetallePDF');
     Route::post('reporteVentaPDF', [InformeController::class, 'reporteVentaPDF'])->name('reporteVentaPDF');
+    Route::post('reporteVentaVendedorSucursalPDF', [InformeController::class, 'reporteVentaVendedorSucursalPDF'])->name('reporteVentaVendedorSucursalPDF');
     Route::post('reporteVentaPendientePDF', [InformeController::class, 'reporteVentaPendientePDF'])->name('reporteVentaPendientePDF');
 
     Route::post('reporteCompraPDF', [InformeController::class, 'reporteCompraPDF'])->name('reporteCompraPDF');

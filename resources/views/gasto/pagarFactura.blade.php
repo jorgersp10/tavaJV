@@ -132,6 +132,16 @@
                                 </select>
                             </div>
                         </div>
+                        <div class="row mb-4">
+                            <label for="nro_comprobante_transferencia" class="col-sm-3 col-form-label">Nro. comprobante transferencia</label>
+                            <div class="col-sm-3">
+                                <input type="text" id="nro_comprobante_transferencia" name="nro_comprobante_transferencia" class="form-control">
+                            </div>
+                            <label for="nro_recibo_proveedor" class="col-sm-3 col-form-label">Nro. recibo proveedor</label>
+                            <div class="col-sm-3">
+                                <input type="text" id="nro_recibo_proveedor" name="nro_recibo_proveedor" class="form-control">
+                            </div>
+                        </div>
 
                         <div class="modal-footer">
                             <button type="submit" class="btn btn-light" data-bs-dismiss="modal">Cerrar</button>

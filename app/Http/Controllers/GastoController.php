@@ -323,6 +323,8 @@ class GastoController extends Controller
                 $request->total_pagadotr=$request->total_pagadotr == NULL ? 0 : $request->total_pagadotr;
                 $pago_gasto->total_pagtr = str_replace(".","",$request->total_pagadotr);
                 $pago_gasto->nro_cuenta = $request->cuenta_id;
+                $pago_gasto->nro_comprobante_transferencia = $request->nro_comprobante_transferencia;
+                $pago_gasto->nro_recibo_proveedor = $request->nro_recibo_proveedor;
 
                 $ingreso=$pago_gasto->total_pagf+$pago_gasto->total_pagch+$pago_gasto->total_pagtc+$pago_gasto->total_pagtd+$pago_gasto->total_pagtr;
 

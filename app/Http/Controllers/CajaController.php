@@ -288,6 +288,7 @@ class CajaController extends Controller
                         else
                             $pago->total_pagtr = str_replace(".","",$request->total_pagadotr);
                         $pago->nro_cuenta = $request->cuenta_id;
+                        $pago->nro_comprobante_transferencia = $request->nro_comprobante_transferencia;
                         // $request->total_pagadotr=$request->total_pagadotr == NULL ? 0 : $request->total_pagadotr;
                         // $pago->total_pagtr = str_replace(".","",$request->total_pagadotr);
                     }
@@ -310,6 +311,7 @@ class CajaController extends Controller
                         $pago->nro_tdebito = '';
 
                         $pago->total_pagtr = 0;
+                        $pago->nro_comprobante_transferencia = null;
                     }
     
                     $pago->moneda="GS";
@@ -689,6 +691,7 @@ class CajaController extends Controller
                 'p.total_pagtr','p.fec_vto','v.total as total_original',
                 'rec.nro_recibo as nro_recibo','cli.num_documento as ruc','vdet.producto_id','vdet.servicio',
                 'pro.descripcion as producto','vdet.cantidad','vdet.precio','v.total as total_venta','p.saldo as saldo',
+                'p.nro_comprobante_transferencia',
                 DB::raw('"RECIBO" as tipo_com'),
                 DB::raw('sum(total_pag) as capital_pagado'))
                 ->where('rec.id','=', $id)
@@ -698,7 +701,8 @@ class CajaController extends Controller
                 'p.iva','p.factura_id','rec.factura','p.nro_pago',
                 'p.total_pag','p.total_pagf','p.total_pagch','p.total_pagtd','p.total_pagtc',
                 'p.total_pagtr','p.fec_vto','v.total',
-                'rec.nro_recibo','cli.num_documento','vdet.producto_id','vdet.servicio','pro.descripcion','vdet.cantidad','vdet.precio','v.total','p.saldo')
+                'rec.nro_recibo','cli.num_documento','vdet.producto_id','vdet.servicio','pro.descripcion','vdet.cantidad','vdet.precio','v.total','p.saldo',
+                'p.nro_comprobante_transferencia')
                 ->get();
             }
             //dd($rec);

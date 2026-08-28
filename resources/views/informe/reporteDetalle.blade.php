@@ -85,6 +85,52 @@
 
                 <div class="card">
                     <div class="card-header">
+                       <h2>Ventas por vendedor y/o sucursal</h2><br/>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group row">
+                            <div class="col-md-12">
+                                <form action="{{ route('reporteVentaVendedorSucursalPDF') }}" method="POST" target="_blank">
+                                {{ csrf_field() }}
+                                <div class="row mb-2">
+                                    <label for="fecha_venta_vendedor_inicio" class="col-sm-1 col-form-label">Inicio</label>
+                                    <div class="col-sm-3">
+                                        <input type="date" id="fecha_venta_vendedor_inicio" name="fecha1" class="form-control">
+                                    </div>
+                                    <label for="fecha_venta_vendedor_fin" class="col-sm-1 col-form-label">Fin</label>
+                                    <div class="col-sm-3">
+                                        <input type="date" id="fecha_venta_vendedor_fin" name="fecha2" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="row mb-2">
+                                    <label for="vendedor_id" class="col-sm-1 col-form-label">Vendedor</label>
+                                    <div class="col-sm-3">
+                                        <select name="vendedor_id" id="vendedor_id" class="form-control">
+                                            <option value="0">Todos</option>
+                                            @foreach($vendedores as $vendedor)
+                                                <option value="{{ $vendedor->id }}">{{ $vendedor->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <label for="sucursal_id" class="col-sm-1 col-form-label">Sucursal</label>
+                                    <div class="col-sm-3">
+                                        <select name="sucursal_id" id="sucursal_id" class="form-control">
+                                            <option value="0">Todas</option>
+                                            @foreach($sucursales as $sucursal)
+                                                <option value="{{ $sucursal->id }}">{{ $sucursal->sucursal }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-danger float-left"><i class="fa fa-file fa-1x"></i> Generar PDF</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
                        <h2>Ventas Cobradas por rango de fecha</h2><br/>
                     </div>
                     <div class="card-body">

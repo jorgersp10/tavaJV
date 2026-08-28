@@ -295,7 +295,7 @@ class CompraController extends Controller
         ->join('proveedores as p','p.id','=','c.proveedor_id')
         ->select('p.nombre','pc.id','pc.factura_id','c.total','pc.total_pag','pc.total_pagf','pc.total_pagtr','pc.total_pagch'
         ,'pc.total_pagtd','pc.total_pagtc','pc.saldo',
-        'pc.fec_pag','pc.nro_pago','pc.nro_recibo','pc.id as recibo_id','c.fact_compra')
+        'pc.fec_pag','pc.nro_pago','pc.nro_recibo','pc.nro_recibo_proveedor','pc.id as recibo_id','c.fact_compra')
         ->orderBy('pc.id','desc')
         ->simplepaginate(30);
         
@@ -491,8 +491,15 @@ class CompraController extends Controller
                 $request->total_pagadotr=$request->total_pagadotr == NULL ? 0 : $request->total_pagadotr;
                 $pago_compra->total_pagtr = str_replace(".","",$request->total_pagadotr);
                 $pago_compra->nro_cuenta = $request->cuenta_id;
+                $pago_compra->nro_comprobante_transferencia = $request->nro_comprobante_transferencia;
+                $pago_compra->nro_recibo_proveedor = $request->nro_recibo_proveedor;
 
                 $ingreso=$pago_compra->total_pagf+$pago_compra->total_pagch+$pago_compra->total_pagtc+$pago_compra->total_pagtd+$pago_compra->total_pagtr;
+
+                if ($ingreso <= 0) {
+                    DB::rollBack();
+                    return Redirect::back()->withInput()->with('msj', 'INGRESE UN IMPORTE DE PAGO MAYOR A CERO');
+                }
 
                 $diferencia = ($request->saldo) - $ingreso;
                 $pago_compra->capital = $ingreso;
@@ -514,6 +521,13 @@ class CompraController extends Controller
                 $pago_compra->usuario_id = auth()->user()->id;
 
                 $pago_compra->save();
+
+                $totalPagado = DB::table('pagos_compra')
+                    ->where('factura_id', $request->id_factura)
+                    ->sum('total_pag');
+                $compra = Compra::findOrFail($request->id_factura);
+                $compra->estado_pago = $totalPagado >= $compra->total ? 'C' : 'P';
+                $compra->update();
 
                 DB::commit();
             }

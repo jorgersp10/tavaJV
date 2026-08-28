@@ -145,8 +145,12 @@
                         <div class="col-sm-3">
                             <input type="text" id="total_pagadotr" name="total_pagadotr" value=0 class="form-control number5">
                         </div>
-                        <label for="horizontal-firstname-input" class="col-sm-1 col-form-label">N° Cuenta.</label>
-                        <div class="col-sm-4">
+                        <label for="nro_comprobante_transferencia" class="col-sm-2 col-form-label">Nro. comprobante</label>
+                        <div class="col-sm-2">
+                            <input type="text" id="nro_comprobante_transferencia" name="nro_comprobante_transferencia" class="form-control">
+                        </div>
+                        <label for="cuenta_id" class="col-sm-1 col-form-label">Cuenta</label>
+                        <div class="col-sm-1">
                             <select class="form-control" name="cuenta_id" id="cuenta_id">                                     
                                 <option value="0">Seleccione</option>                                        
                                 @foreach($cuentas as $cc)

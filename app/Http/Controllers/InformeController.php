@@ -323,9 +323,67 @@ class InformeController extends Controller
 
     public function reporteDetalle()
     {
+        $vendedores = DB::table('vendedores')
+            ->select('id', 'name')
+            ->where('condicion', 1)
+            ->orderBy('name')
+            ->get();
+        $sucursales = DB::table('sucursales')
+            ->select('id', 'sucursal')
+            ->orderBy('sucursal')
+            ->get();
 
-        return view('informe.reporteDetalle');
+        return view('informe.reporteDetalle', compact('vendedores', 'sucursales'));
 
+    }
+
+    public function reporteVentaVendedorSucursalPDF(Request $request)
+    {
+        $date1 = $request->fecha1;
+        $date2 = $request->fecha2;
+
+        $ventas = DB::table('ventas as v')
+            ->join('clientes as c', 'c.id', '=', 'v.cliente_id')
+            ->join('users as u', 'u.id', '=', 'v.user_id')
+            ->leftJoin('vendedores as ven', 'ven.id', '=', 'v.vendedor_id')
+            ->leftJoin('sucursales as s', 's.id', '=', 'u.idsucursal')
+            ->select('v.fact_nro', 'v.fecha', 'v.ivaTotal', 'v.total', 'v.estado', 'v.estado_pago',
+                'c.nombre as cliente', 'ven.name as vendedor', 's.sucursal')
+            ->orderBy('v.fecha')
+            ->orderBy('v.id');
+
+        if ($date1 && $date2) {
+            $ventas->whereBetween('v.fecha', [$date1, $date2]);
+        }
+
+        $vendedorSeleccionado = 'Todos';
+        if ($request->filled('vendedor_id') && $request->vendedor_id != 0) {
+            $ventas->where('v.vendedor_id', $request->vendedor_id);
+            $vendedorSeleccionado = DB::table('vendedores')
+                ->where('id', $request->vendedor_id)
+                ->value('name') ?: 'Todos';
+        }
+
+        $sucursalSeleccionada = 'Todas';
+        if ($request->filled('sucursal_id') && $request->sucursal_id != 0) {
+            $ventas->where('u.idsucursal', $request->sucursal_id);
+            $sucursalSeleccionada = DB::table('sucursales')
+                ->where('id', $request->sucursal_id)
+                ->value('sucursal') ?: 'Todas';
+        }
+
+        $ventas = $ventas->get();
+        if ($ventas->isEmpty()) {
+            $ventas = 'Vacio';
+        }
+
+        return \PDF::loadView('informe.reporteVentaVendedorSucursalPDF', [
+            'date1' => $date1,
+            'date2' => $date2,
+            'ventas' => $ventas,
+            'vendedorSeleccionado' => $vendedorSeleccionado,
+            'sucursalSeleccionada' => $sucursalSeleccionada,
+        ])->setPaper('a4', 'landscape')->stream('reporte_ventas_vendedor_sucursal.pdf');
     }
 
     public function reporteDetallePDF(Request $request)
