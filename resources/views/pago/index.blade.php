@@ -46,6 +46,7 @@
                                     <thead>                            
                                             <tr>      
                                             <th  data-priority="1">Borrar</th>
+                                            <th  data-priority="1">Recibo</th>
                                             <th  data-priority="1">Cliente</th>
                                             <th  data-priority="1">Fac Nro</th>
                                             <th  data-priority="1">Fecha</th>
@@ -70,6 +71,15 @@
                                                     <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#borrarRegistro-{{$p->id}}">
                                                         <i class="fa fa-times fa-1x"></i> Borrar
                                                     </button>                                    
+                                                </td>
+                                                <td>
+                                                    @if($p->recibo_id)
+                                                    <a href="{{ route('comprobante_imp', ['id' => $p->recibo_id, 'tc' => 'RECIBO']) }}" target="_blank">
+                                                        <button type="button" class="btn btn-success btn-sm">
+                                                            <i class="fa fa-print fa-1x"></i> Imprimir
+                                                        </button>
+                                                    </a>
+                                                    @endif
                                                 </td>
                                                 <td>{{$p->nombre}}</td>
                                                 <td>{{$p->fact_nro}}</td>

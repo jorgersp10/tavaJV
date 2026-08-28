@@ -135,11 +135,7 @@
                 @endforeach
                     <tr>
                         <!-- <td align="center">{{$r->tran_inmo}}</td> -->
-                        @if($r->factura > 00)
-                            <td align="center">001-000{{$r->factura}}</td>
-                            @else
-                            <td align="center">XXXX</td>
-                        @endif
+                        <td align="center">{{ $rec[0]->factura ?: 'XXXX' }}</td>
                         <!-- <td align="center">{{$rec[0]->pcc}}-{{$rec[0]->ucc}} de {{$rec[0]->plazo}}</td> -->
                         <td align="center">{{$rec[0]->nro_pago}}</td>
                         <td align="center">{{ date('d-m-Y', strtotime($rec[0]->fec_vto))}}</td>
@@ -172,9 +168,9 @@
 
                     <tr>
                         <td align="center">{{$r->cantidad}}</td>                        
-                        <td style="width:230px">{{$r->producto}}</td>
-                        <td align="center">{{number_format(($r->precio_venta), 0, ",", ".")}}</td>
-                        <td align="center">{{number_format(($r->precio_venta*$r->cantidad), 0, ",", ".")}}</td>
+                        <td style="width:230px">{{ $r->servicio ?: $r->producto }}</td>
+                        <td align="center">{{number_format(($r->precio), 0, ",", ".")}}</td>
+                        <td align="center">{{number_format(($r->precio*$r->cantidad), 0, ",", ".")}}</td>
                     </tr>                              
                     
                 </tbody>
@@ -284,11 +280,7 @@
                 @endforeach
                     <tr>
                         <!-- <td align="center">{{$r->tran_inmo}}</td> -->
-                        @if($r->factura > 00)
-                            <td align="center">001-000{{$r->factura}}</td>
-                            @else
-                            <td align="center">XXXX</td>
-                        @endif
+                        <td align="center">{{ $rec[0]->factura ?: 'XXXX' }}</td>
                         <!-- <td align="center">{{$rec[0]->pcc}}-{{$rec[0]->ucc}} de {{$rec[0]->plazo}}</td> -->
                         <td align="center">{{$rec[0]->nro_pago}}</td>
                         <td align="center">{{ date('d-m-Y', strtotime($rec[0]->fec_vto))}}</td>
@@ -319,9 +311,9 @@
 
                     <tr>
                         <td align="center">{{$r->cantidad}}</td>                        
-                        <td style="width:230px">{{$r->producto}}</td>
-                        <td align="center">{{number_format(($r->precio_venta), 0, ",", ".")}}</td>
-                        <td align="center">{{number_format(($r->precio_venta*$r->cantidad), 0, ",", ".")}}</td>
+                        <td style="width:230px">{{ $r->servicio ?: $r->producto }}</td>
+                        <td align="center">{{number_format(($r->precio), 0, ",", ".")}}</td>
+                        <td align="center">{{number_format(($r->precio*$r->cantidad), 0, ",", ".")}}</td>
                     </tr>                               
                     
                 </tbody>

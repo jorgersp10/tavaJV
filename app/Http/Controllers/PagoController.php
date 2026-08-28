@@ -44,8 +44,9 @@ class PagoController extends Controller
             ->join('cuotas as c', 'c.id', '=', 'p.cuota_id')
             ->join('ventas as v', 'v.id', '=', 'c.factura_id')
             ->join('clientes as cli', 'cli.id', '=', 'c.cliente_id')
+            ->leftJoin('recibos as r', 'r.tran_inmo', '=', 'p.transaccion')
             ->select('p.id','cli.nombre','v.fact_nro','p.fec_pag','v.total','p.total_pag','p.total_pagf',
-            'p.total_pagch','p.total_pagtd','p.total_pagtc','p.total_pagtr','p.saldo')
+            'p.total_pagch','p.total_pagtd','p.total_pagtc','p.total_pagtr','p.saldo','r.id as recibo_id')
             ->orderBy('p.id','desc')
             ->get();
 
