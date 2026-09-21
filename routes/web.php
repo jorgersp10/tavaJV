@@ -34,6 +34,7 @@ use App\Http\Controllers\ChequeController;
 use App\Http\Controllers\Cheque_emitidoController;
 use App\Http\Controllers\IvaController;
 use App\Http\Controllers\EmpresaController;
+use App\Http\Controllers\ConfigFacturaController;
 use App\Http\Controllers\TransferenciaController;
 
 use Illuminate\Support\Facades\Auth;
@@ -119,6 +120,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('iva', IvaController::class);
     Route::resource('empresa', EmpresaController::class);
     Route::resource('transfer', TransferenciaController::class);
+    Route::get('config_factura', [ConfigFacturaController::class, 'index'])->name('config_factura.index');
+    Route::post('config_factura', [ConfigFacturaController::class, 'update'])->name('config_factura.update');
 
     Route::get('editar/{id}', [PresupuestoController::class, 'editar'])->name('editar'); 
     Route::get('obtenerPresupuesto/{id}', [PresupuestoController::class, 'obtenerPresupuesto'])->name('obtenerPresupuesto');   

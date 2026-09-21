@@ -32,13 +32,13 @@
         height: 70px;
         }
         #cabecera{
-        height: 128px;
+        height: {{ $configFactura->cabecera ?? 113 }}px;
         }
         #cabecera2{
-        height: 236px;
+        height: {{ $configFactura->cabecera2 ?? 223 }}px;
         }
         #cabecera3{
-        height: 346px;
+        height: {{ $configFactura->cabecera3 ?? 340 }}px;
         }
         #fecha{
         font-size: 13px;

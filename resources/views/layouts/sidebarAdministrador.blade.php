@@ -290,6 +290,15 @@
                                 </form> 
                         </li> 
 
+                        <li class="nav-item">
+                            <a class="waves-effect" href="{{url('config_factura')}}" onclick="event.preventDefault(); document.getElementById('config_factura-form').submit();">
+                            <span>Configuración de Factura</span></a>
+                            <form id="config_factura-form" action="{{url('config_factura')}}" method="GET" style="display: none;">
+                                {{csrf_field()}} 
+                                </form> 
+                        </li> 
+
+
                          <li>
                             <a class="waves-effect"  href="{{url('cuenta_corriente')}}" onclick="event.preventDefault(); document.getElementById('cuenta_corriente-form').submit();">
                             <span>Lista de cuentas corrientes</span></a>

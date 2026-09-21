@@ -571,10 +571,13 @@ class FacturaController extends Controller
        
         $tot_pag_let=NumerosEnLetras::convertir($tp,'Guaranies',false,'Centavos');
         
+        $configFactura = \App\Models\ConfigFactura::actual();
+
         //dd($detalles);
         //return view('factura.facturaPDF',['ventas' => $ventas,'detalles' =>$detalles]);
         return $pdf= PDF::loadView('factura.facturaPDF',['ventas' => $ventas,'detalles' =>$detalles,
-        'diafecha' =>$diafecha,'mesLetra' =>$mesLetra,'agefecha' =>$agefecha,'tot_pag_let' =>$tot_pag_let])
+        'diafecha' =>$diafecha,'mesLetra' =>$mesLetra,'agefecha' =>$agefecha,'tot_pag_let' =>$tot_pag_let,
+        'configFactura' =>$configFactura])
          ->setPaper([0, 0, 702.2835, 1150.087], 'portrait')
          ->stream('Factura'.$id.'.pdf');
     }
