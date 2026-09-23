@@ -63,7 +63,7 @@
                             @if($empresas->logo)
                             <div class="col-md-3">
                                 <label class="form-control-label d-block">Logo actual</label>
-                                <img src="{{ asset('storage/' . $empresas->logo) }}" alt="Logo de {{$empresas->nombre}}" style="max-width: 180px; max-height: 80px;">
+                                <img src="{{ route('empresa.logo', $empresas->id) }}" alt="Logo de {{$empresas->nombre}}" style="max-width: 180px; max-height: 80px;">
                             </div>
                             @endif
                         </div>

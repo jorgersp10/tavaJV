@@ -65,7 +65,7 @@
 
     @php
         $logoEmpresa = $rec[0]->empresa_logo
-            ? public_path('storage/' . $rec[0]->empresa_logo)
+            ? storage_path('app/public/' . $rec[0]->empresa_logo)
             : public_path('assets/images/inox.jpg');
         if (!file_exists($logoEmpresa)) {
             $logoEmpresa = public_path('assets/images/inox.jpg');

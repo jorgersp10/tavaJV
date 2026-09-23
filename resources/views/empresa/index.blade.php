@@ -77,7 +77,7 @@
                                                 <td>{{$e->direccion}}</td>                                                               
                                                 <td>
                                                     @if($e->logo)
-                                                        <img src="{{ asset('storage/' . $e->logo) }}" alt="Logo de {{$e->nombre}}" style="max-width: 100px; max-height: 50px;">
+                                                        <img src="{{ route('empresa.logo', $e->id) }}" alt="Logo de {{$e->nombre}}" style="max-width: 100px; max-height: 50px;">
                                                     @else
                                                         -
                                                     @endif

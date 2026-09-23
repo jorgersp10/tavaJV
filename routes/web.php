@@ -119,6 +119,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('cheque_emitido', Cheque_emitidoController::class);
     Route::resource('iva', IvaController::class);
     Route::resource('empresa', EmpresaController::class);
+    Route::get('empresa/{id}/logo', [EmpresaController::class, 'logo'])->name('empresa.logo');
     Route::resource('transfer', TransferenciaController::class);
     Route::get('config_factura', [ConfigFacturaController::class, 'index'])->name('config_factura.index');
     Route::post('config_factura', [ConfigFacturaController::class, 'update'])->name('config_factura.update');

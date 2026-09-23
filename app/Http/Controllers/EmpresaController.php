@@ -34,6 +34,18 @@ class EmpresaController extends Controller
         return view('empresa.create');
     }
 
+    public function logo($id)
+    {
+        $empresa = Empresa::findOrFail($id);
+        $path = $empresa->logo ? storage_path('app/public/' . $empresa->logo) : null;
+
+        if (!$path || !is_file($path)) {
+            abort(404);
+        }
+
+        return response()->file($path);
+    }
+
     /**
      * Store a newly created resource in storage.
      *
