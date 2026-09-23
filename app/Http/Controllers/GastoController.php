@@ -135,7 +135,8 @@ class GastoController extends Controller
             $gasto = new Gasto();
             $gasto->proveedor_id = $request->proveedor_id;
             $gasto->fact_compra = $request->fact_compra;
-            $gasto->fecha = $fecha_hoy->toDateString();
+            $gasto->descripcion = $request->descripcion;
+            $gasto->fecha = $request->fecha ?: $fecha_hoy->toDateString();
             $gasto->iva = $request->total_iva;
             $gasto->total = $request->total_pagar;
             $gasto->estado = 0;
@@ -188,12 +189,12 @@ class GastoController extends Controller
         $gastos=DB::table('gastos as c')
         ->join('gastos_det as cdet','c.id','=','cdet.gasto_id')
         ->join('proveedores as p','p.id','=','c.proveedor_id')
-        ->select('c.id','c.fact_compra','c.fecha','c.total','p.nombre','c.iva',
+        ->select('c.id','c.fact_compra','c.descripcion','c.fecha','c.total','p.nombre','c.iva',
         'p.nombre','p.ruc'
         ,DB::raw('sum(cdet.cantidad*precio) as total'))
         ->where('c.id','=',$id)
         ->orderBy('c.id', 'desc')
-        ->groupBy('c.id','c.fact_compra','c.fecha','c.total','p.nombre','c.iva',
+        ->groupBy('c.id','c.fact_compra','c.descripcion','c.fecha','c.total','p.nombre','c.iva',
         'p.nombre','p.ruc')
         ->first();
 
@@ -284,7 +285,9 @@ class GastoController extends Controller
             {        
                 DB::beginTransaction();
                 // Empezamos a cobrar
-                $now = Carbon::now();
+                $now = $request->fecha_pago
+                    ? Carbon::parse($request->fecha_pago, 'America/Asuncion')
+                    : Carbon::now('America/Asuncion');
                 $pago_gasto= new Pago_gasto();
                 $pago_gasto->factura_id=$request->id_factura;
 

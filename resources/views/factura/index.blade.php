@@ -80,6 +80,7 @@
                                             <th  data-priority="1">Ver Detalle</th>
                                             <th  data-priority="1">Fecha</th>
                                             <th  data-priority="1">Fact. / Orden N°</th>
+                                            <th  data-priority="1">Tipo</th>
                                             <th  data-priority="1">Cliente</th>
                                             <th  data-priority="1">Total</th>
                                             <th  data-priority="1">Iva</th>
@@ -139,6 +140,7 @@
                                                 @else
                                                     <td>{{$ven->nro_recibo}}</td>
                                                 @endif
+                                                <td>{{ $ven->tipo_factura == 0 ? 'CON' : 'CRE' }}</td>
                                                 <td>{{$ven->nombre}}</td>
                                                 <td>Gs. {{number_format(($ven->total), 0, ",", ".")}}</td>
                                                 <td>Gs. {{number_format(($ven->ivaTotal), 0, ",", ".")}}</td>

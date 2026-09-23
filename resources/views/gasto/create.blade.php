@@ -54,11 +54,23 @@
                                 </div>
                             </div>
                             <div class="col-md-4">
+                                <label class="col-md-3 form-control-label" for="fecha">Fecha del gasto</label>
+                                <div class="mb-3">
+                                    <input type="date" id="fecha" name="fecha" class="form-control" value="{{ now('America/Asuncion')->format('Y-m-d') }}" required>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
                                 <label class="col-md-5 form-control-label" for="precio">Tildar si tiene valor contable</label>
                                 <div class="col-sm-3 form-check form-switch">
                                     <input class="form-check-input" type="checkbox" id="contable" name="contable">
                                     <label class="form-check-label" for="flexSwitchCheckDefault">Contable</label>
                                 </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-md-12">
+                                <label class="form-control-label" for="descripcion">Descripción del gasto</label>
+                                <textarea id="descripcion" name="descripcion" class="form-control" rows="2" placeholder="Ingrese una descripción del gasto"></textarea>
                             </div>
                         </div>
                         <div class="form-group row border">
@@ -249,10 +261,9 @@
         function agregar(){
 
              concepto_id= $("#concepto_id").val();
-             producto= $("#concepto_id").val();
+             producto= $("#concepto_id option:selected").text();
              cantidad= $("#cantidad").val();
              precio= $("#precio").val();
-             console.log(precio);
              stockpro = $("#stock").val();
              precio_minimo= $("#precio_min").val();
              precio_maximo= $("#precio_max").val();
@@ -269,10 +280,8 @@
 
             if(concepto_id !="" && cantidad!="" && cantidad>0 && precio!=""){
                precioFinal = precio.replaceAll(".","");
-               console.log(precioFinal);
                subtotal[cont]=Math.round(cantidad*precioFinal);
                total= total+subtotal[cont];
-               console.log(subtotal[cont]);
                //funcion para agregar separador de miles
                var formatNumber = {
                     separador: ".", // separador para los miles
@@ -297,7 +306,6 @@
                //totales para la vista
                subtotalVista[cont]=formatNumber.new(subtotal[cont]);
                totalVista=formatNumber.new (total);
-               console.log(subtotalVista[cont]);
 
                var fila= '<tr class="selected" id="fila'+cont+'"><td><button type="button" class="btn btn-danger btn-sm" onclick="eliminar('+cont+');"><i class="fa fa-times fa-2x"></i></button></td> <td><input type="hidden" name="concepto_id[]" value="'+concepto_id+'">'+producto+'</td> <td><input readonly type="text" id="precio[]" name="precio[]"  value="'+precio+'"> </td>  <td><input readonly type="number" name="cantidad[]" value="'+cantidad+'"> </td> <td>Gs. '+subtotalVista[cont]+' </td></tr>';
                cont++;

@@ -49,6 +49,7 @@
                                             <th  data-priority="1">Recibo</th>
                                             <th  data-priority="1">Cliente</th>
                                             <th  data-priority="1">Fac Nro</th>
+                                            <th  data-priority="1">Tipo</th>
                                             <th  data-priority="1">Fecha</th>
                                             <th  data-priority="1">Total</th>
                                             <th  data-priority="1">Total Pag.</th>
@@ -83,6 +84,7 @@
                                                 </td>
                                                 <td>{{$p->nombre}}</td>
                                                 <td>{{$p->fact_nro}}</td>
+                                                <td>{{ $p->tipo_factura == 0 ? 'CON' : 'CRE' }}</td>
                                                 <td>{{ date('d-m-Y', strtotime($p->fec_pag)) }}</td>                                                
                                                 <td>{{number_format($p->total, 0, ",", ".")}}</td>
                                                 <td>{{number_format($p->total_pag, 0, ",", ".")}}</td>

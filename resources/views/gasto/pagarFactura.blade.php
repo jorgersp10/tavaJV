@@ -48,6 +48,12 @@
                             </div>
                         </div>
                         <div class="row mb-4">
+                            <label for="fecha_pago" class="col-sm-3 col-form-label">Fecha del pago</label>
+                            <div class="col-sm-4">
+                                <input type="date" id="fecha_pago" name="fecha_pago" class="form-control" value="{{ now('America/Asuncion')->format('Y-m-d') }}" required>
+                            </div>
+                        </div>
+                        <div class="row mb-4">
                             <label for="horizontal-firstname-input" class="col-sm-3 col-form-label">Proveedor</label>
                             <div class="col-sm-4">
                                 <input readonly="readonly" type="text" value="{{$gastos->nombre}}"  class="form-control">

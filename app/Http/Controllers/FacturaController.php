@@ -42,12 +42,12 @@ class FacturaController extends Controller
             ->join('clientes as c','c.id','=','v.cliente_id')
             ->join('users as u','u.id','=','v.user_id')
              ->select('v.id','v.fact_nro','v.iva5','v.iva10','v.ivaTotal','v.exenta','v.fecha',
-             'v.total','v.estado','c.nombre','v.contable','v.nro_recibo')
+             'v.total','v.estado','c.nombre','v.contable','v.nro_recibo','v.tipo_factura')
             ->where('v.fact_nro','LIKE','%'.$sql.'%')
             ->orwhere('c.nombre','LIKE','%'.$sql.'%')
             ->orderBy('v.id','desc')
             ->groupBy('v.id','v.fact_nro','v.iva5','v.iva10','v.ivaTotal','v.exenta','v.fecha',
-            'v.total','v.estado','c.nombre','v.contable','v.nro_recibo')
+            'v.total','v.estado','c.nombre','v.contable','v.nro_recibo','v.tipo_factura')
             ->paginate(10);
 
             $fecha_iva = DB::table('iva_param as i')

@@ -47,6 +47,13 @@
                     </div>
                 </div>
 
+                <div class="form-group row">
+                    <label class="col-md-2 form-control-label"><b>Descripción:</b></label>
+                    <div class="col-md-8">
+                        <p>{{ $gastos->descripcion ?: '-' }}</p>
+                    </div>
+                </div>
+
         <div class="form-group row border">
 
               <h3>Detalle de gastos</h3>
