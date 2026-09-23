@@ -48,6 +48,7 @@
                                             <th  data-priority="1">Nombre</th>
                                             <th  data-priority="1">RUC</th>
                                             <th  data-priority="1">Direccion</th>                                            
+                                            <th  data-priority="1">Logo</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -74,6 +75,13 @@
                                                 <td>{{$e->nombre}}</td>
                                                 <td>{{$e->ruc}}</td>
                                                 <td>{{$e->direccion}}</td>                                                               
+                                                <td>
+                                                    @if($e->logo)
+                                                        <img src="{{ asset('storage/' . $e->logo) }}" alt="Logo de {{$e->nombre}}" style="max-width: 100px; max-height: 50px;">
+                                                    @else
+                                                        -
+                                                    @endif
+                                                </td>
                                             </tr>  
                                             @include('empresa.delete')
                                         @endforeach

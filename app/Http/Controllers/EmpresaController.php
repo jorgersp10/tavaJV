@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Empresa;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Storage;
 use DB;
 class EmpresaController extends Controller
 {
@@ -16,7 +17,7 @@ class EmpresaController extends Controller
     public function index(Request $request)
     {       
         $empresas=DB::table('empresas as e')
-        ->select('e.id as id','e.nombre','e.ruc','e.direccion')
+        ->select('e.id as id','e.nombre','e.ruc','e.direccion','e.logo')
         ->orderBy('e.id','asc')
         ->get();
 
@@ -41,10 +42,17 @@ class EmpresaController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'logo' => 'nullable|image|mimes:png,jpg,jpeg|max:2048',
+        ]);
+
         $empresa= new Empresa();        
         $empresa->nombre = $request->nombre;
         $empresa->ruc = $request->ruc;
         $empresa->direccion = $request->direccion;
+        if ($request->hasFile('logo')) {
+            $empresa->logo = $request->file('logo')->store('empresas/logos', 'public');
+        }
 
         $empresa->save();
         return Redirect::to("empresa");
@@ -59,7 +67,7 @@ class EmpresaController extends Controller
     public function show($id)
     {
         $empresas=DB::table('empresas as e')
-        ->select('e.id as id','e.nombre','e.ruc','e.direccion')
+        ->select('e.id as id','e.nombre','e.ruc','e.direccion','e.logo')
         ->where('e.id','=',$id)
         ->first();
 
@@ -87,10 +95,20 @@ class EmpresaController extends Controller
      */
     public function update(Request $request)
     {
+        $request->validate([
+            'logo' => 'nullable|image|mimes:png,jpg,jpeg|max:2048',
+        ]);
+
         $empresa= Empresa::findOrFail($request->id_empresa);
         $empresa->nombre = $request->nombre;
         $empresa->ruc = $request->ruc;
         $empresa->direccion = $request->direccion;
+        if ($request->hasFile('logo')) {
+            if ($empresa->logo) {
+                Storage::disk('public')->delete($empresa->logo);
+            }
+            $empresa->logo = $request->file('logo')->store('empresas/logos', 'public');
+        }
 
         $empresa->update();
         return Redirect::to("empresa");

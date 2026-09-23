@@ -63,19 +63,27 @@
         }
     </style>
 
+    @php
+        $logoEmpresa = $rec[0]->empresa_logo
+            ? public_path('storage/' . $rec[0]->empresa_logo)
+            : public_path('assets/images/inox.jpg');
+        if (!file_exists($logoEmpresa)) {
+            $logoEmpresa = public_path('assets/images/inox.jpg');
+        }
+    @endphp
+
 <section id="seccion1">
         
         <div class="Row">
             <!-- <h4 class="float-end font-size-16">Order # 12345</h4> -->
             <div  class="Column" style="text-align:center;" id="timbrado">
-            <img src="{{ public_path('assets/images/inox.jpg') }}" alt="logo" height="45px" width="200px" /><br>
-                <strong style="text-align:center;" >Ruta 1 - Segunda Paralela al este</strong> <br>
-                <strong style="text-align:center;" >Tel.: (071) 207615 - (0986) 755440</strong> <br>
-                <strong style="text-align:center;">Encarnacion - Paraguay</strong> <br>
+            <img src="{{ $logoEmpresa }}" alt="logo" height="45px" width="200px" /><br>
+                <strong style="text-align:center;" >{{$rec[0]->empresa_nombre}}</strong> <br>
+                <strong style="text-align:center;" >{{$rec[0]->empresa_direccion}}</strong> <br>
             </div>
             <div class="Column" id="ruc">
                 
-                    <strong>RUC:</strong> 6698924-8<br>
+                    <strong>RUC:</strong> {{$rec[0]->empresa_ruc}}<br>
                     <strong>RECIBO DE DINERO</strong><br>
                     <strong>NRO:</strong> {{$rec[0]->nro_recibo}}<br>
                 
@@ -233,14 +241,13 @@
 <div class="Row">
             <!-- <h4 class="float-end font-size-16">Order # 12345</h4> -->
             <div  class="Column" style="text-align:center;" id="timbrado">
-            <img src="{{ public_path('assets/images/inox.jpg') }}" alt="logo" height="45px" width="200px" /><br>
-                <strong style="text-align:center;" >Ruta 1 - Segunda Paralela al este</strong> <br>
-                <strong style="text-align:center;" >Tel.: (071) 207615 - (0986) 755440</strong> <br>
-                <strong style="text-align:center;">Encarnacion - Paraguay</strong> <br>
+                            <img src="{{ $logoEmpresa }}" alt="logo" height="45px" width="200px" /><br>
+                <strong style="text-align:center;" >{{$rec[0]->empresa_nombre}}</strong> <br>
+                <strong style="text-align:center;" >{{$rec[0]->empresa_direccion}}</strong> <br>
             </div>
             <div class="Column" id="ruc">
                 
-                    <strong>RUC:</strong> 6698924-8<br>
+                    <strong>RUC:</strong> {{$rec[0]->empresa_ruc}}<br>
                     <strong>RECIBO DE DINERO</strong><br>
                     <strong>NRO:</strong> {{$rec[0]->nro_recibo}}<br>
                 

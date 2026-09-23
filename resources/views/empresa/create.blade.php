@@ -32,7 +32,7 @@
                     </div>
 
                     <div class="card-body">
-                        <form id="form_mora" action="{{route('empresa.store')}}" method="POST">
+                        <form id="form_mora" action="{{route('empresa.store')}}" method="POST" enctype="multipart/form-data">
                              {{csrf_field()}}
                         <div class="form-group row">
                             <div class="col-md-4">
@@ -52,6 +52,12 @@
                                 <div class="mb-3">
                                     <input type="text" id="direccion" name="direccion" class="form-control" placeholder="Ingrese direccion">
                                 </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-md-6">
+                                <label class="form-control-label" for="logo">Logo de la empresa (PNG o JPG)</label>
+                                <input type="file" id="logo" name="logo" class="form-control" accept="image/png,image/jpeg">
                             </div>
                         </div>
                         

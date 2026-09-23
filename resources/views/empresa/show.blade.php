@@ -55,6 +55,18 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="form-group row">
+                            <div class="col-md-6">
+                                <label class="form-control-label" for="logo">Logo de la empresa (PNG o JPG)</label>
+                                <input type="file" id="logo" name="logo" class="form-control" accept="image/png,image/jpeg">
+                            </div>
+                            @if($empresas->logo)
+                            <div class="col-md-3">
+                                <label class="form-control-label d-block">Logo actual</label>
+                                <img src="{{ asset('storage/' . $empresas->logo) }}" alt="Logo de {{$empresas->nombre}}" style="max-width: 180px; max-height: 80px;">
+                            </div>
+                            @endif
+                        </div>
                         <input type="hidden" id="id_empresa" name="id_empresa" value="{{$empresas->id}}" class="form-control">
 
                         <div class="modal-footer">

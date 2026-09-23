@@ -682,6 +682,7 @@ class CajaController extends Controller
                 ->join('pagos as p','p.transaccion','=','rec.tran_inmo')
                 ->join('ventas_det as vdet','vdet.venta_id','=','p.factura_id')
                 ->join('ventas as v','v.id','=','vdet.venta_id')
+                ->leftJoin('empresas as emp','emp.id','=','v.empresa_id')
                 ->leftJoin('productos as pro','pro.id','=','vdet.producto_id')
                 ->select('rec.tran_inmo','rec.id','rec.fec_recibo as fecha','rec.nro_recibo as nro_com',
                 'cli.nombre as nombre_cli','rec.monto_pag as total','rec.pcc','rec.ucc','rec.plazo',
@@ -692,6 +693,7 @@ class CajaController extends Controller
                 'rec.nro_recibo as nro_recibo','cli.num_documento as ruc','vdet.producto_id','vdet.servicio',
                 'pro.descripcion as producto','vdet.cantidad','vdet.precio','v.total as total_venta','p.saldo as saldo',
                 'p.nro_comprobante_transferencia',
+                'emp.nombre as empresa_nombre','emp.ruc as empresa_ruc','emp.direccion as empresa_direccion','emp.logo as empresa_logo',
                 DB::raw('"RECIBO" as tipo_com'),
                 DB::raw('sum(total_pag) as capital_pagado'))
                 ->where('rec.id','=', $id)
@@ -702,7 +704,7 @@ class CajaController extends Controller
                 'p.total_pag','p.total_pagf','p.total_pagch','p.total_pagtd','p.total_pagtc',
                 'p.total_pagtr','p.fec_vto','v.total',
                 'rec.nro_recibo','cli.num_documento','vdet.producto_id','vdet.servicio','pro.descripcion','vdet.cantidad','vdet.precio','v.total','p.saldo',
-                'p.nro_comprobante_transferencia')
+                'p.nro_comprobante_transferencia','emp.nombre','emp.ruc','emp.direccion','emp.logo')
                 ->get();
             }
             //dd($rec);
