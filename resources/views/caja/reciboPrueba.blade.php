@@ -91,7 +91,7 @@
             <div class="Column" id="ruc">
                 
                     <strong>Fecha:</strong> {{date('d-m-Y')}}<br>
-                    <strong>Usuario:</strong> {{auth()->user()->name}}<br> 
+                    <strong>Usuario:</strong> {{$rec[0]->cobrador}}<br>
                 
             </div>
         </div></br>
@@ -226,7 +226,7 @@
                 <address class="mt-2 mt-sm-0">
                     <strong style="text-align:right;">__________________________</strong><br> 
                     <strong style="text-align:right;">Cobrador Autorizado</strong><br> 
-                    <strong style="text-align:right;">{{auth()->user()->name}}</strong><br>                             
+                    <strong style="text-align:right;">{{$rec[0]->cobrador}}</strong><br>
                 </address>
             </div>
         </div>
@@ -255,7 +255,7 @@
             <div class="Column" id="ruc">
                 
                     <strong>Fecha:</strong> {{date('d-m-Y')}}<br>
-                    <strong>Usuario:</strong> {{auth()->user()->name}}<br> 
+                    <strong>Usuario:</strong> {{$rec[0]->cobrador}}<br>
                 
             </div>
         </div></br>
@@ -420,7 +420,7 @@
                 <address class="mt-2 mt-sm-0">
                     <strong style="text-align:right;">__________________________</strong><br> 
                     <strong style="text-align:right;">Cobrador Autorizado</strong><br> 
-                    <strong style="text-align:right;">{{auth()->user()->name}}</strong><br>                             
+                    <strong style="text-align:right;">{{$rec[0]->cobrador}}</strong><br>
                 </address>
             </div>
         </div>

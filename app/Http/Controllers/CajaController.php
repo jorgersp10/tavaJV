@@ -680,12 +680,13 @@ class CajaController extends Controller
                 $rec=DB::table('recibos as rec')
                 ->join('clientes as cli','cli.id','=','rec.doc_cliente')
                 ->join('pagos as p','p.transaccion','=','rec.tran_inmo')
+                ->leftJoin('users as u','u.id','=','rec.usuario_id')
                 ->join('ventas_det as vdet','vdet.venta_id','=','p.factura_id')
                 ->join('ventas as v','v.id','=','vdet.venta_id')
                 ->leftJoin('empresas as emp','emp.id','=','v.empresa_id')
                 ->leftJoin('productos as pro','pro.id','=','vdet.producto_id')
                 ->select('rec.tran_inmo','rec.id','rec.fec_recibo as fecha','rec.nro_recibo as nro_com',
-                'cli.nombre as nombre_cli','rec.monto_pag as total','rec.pcc','rec.ucc','rec.plazo',
+                'cli.nombre as nombre_cli','u.name as cobrador','rec.monto_pag as total','rec.pcc','rec.ucc','rec.plazo',
                 'p.inmueble_id','p.moneda','p.cuota','p.capital','p.interes','p.moratorio','p.punitorio',
                 'p.iva','p.factura_id','rec.factura','p.nro_pago',
                 'p.total_pag','p.total_pagf','p.total_pagch','p.total_pagtd','p.total_pagtc',
@@ -698,7 +699,7 @@ class CajaController extends Controller
                 DB::raw('sum(total_pag) as capital_pagado'))
                 ->where('rec.id','=', $id)
                 ->groupby('rec.tran_inmo','rec.id','rec.fec_recibo','rec.nro_recibo',
-                'cli.nombre','rec.monto_pag','rec.pcc','rec.ucc','rec.plazo',
+                'cli.nombre','u.name','rec.monto_pag','rec.pcc','rec.ucc','rec.plazo',
                 'p.inmueble_id','p.moneda','p.cuota','p.capital','p.interes','p.moratorio','p.punitorio',
                 'p.iva','p.factura_id','rec.factura','p.nro_pago',
                 'p.total_pag','p.total_pagf','p.total_pagch','p.total_pagtd','p.total_pagtc',
