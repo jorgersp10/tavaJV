@@ -43,6 +43,13 @@ class FacturaController extends Controller
             ->join('users as u','u.id','=','v.user_id')
              ->select('v.id','v.fact_nro','v.iva5','v.iva10','v.ivaTotal','v.exenta','v.fecha',
              'v.total','v.estado','c.nombre','v.contable','v.nro_recibo','v.tipo_factura')
+            ->selectSub(function ($query) {
+                $query->from('cuotas as cu')
+                    ->join('cuotas_det as cdet', 'cdet.cuota_id', '=', 'cu.id')
+                    ->selectRaw('COUNT(*)')
+                    ->whereColumn('cu.factura_id', 'v.id')
+                    ->where('cdet.estado_cuota', '=', 'P');
+            }, 'cuotas_pendientes')
             ->where('v.fact_nro','LIKE','%'.$sql.'%')
             ->orwhere('c.nombre','LIKE','%'.$sql.'%')
             ->orderBy('v.id','desc')

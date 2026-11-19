@@ -84,6 +84,7 @@
                                             <th  data-priority="1">Cliente</th>
                                             <th  data-priority="1">Total</th>
                                             <th  data-priority="1">Iva</th>
+                                            <th  data-priority="1">Condición</th>
                                             <th  data-priority="1">Estado</th>
                                             <th  data-priority="1">Cambiar Estado</th>
                                             
@@ -157,6 +158,18 @@
 
                                                     @endif
                                                     
+                                                    </td>
+
+                                                    <td>
+                                                        @if($ven->cuotas_pendientes > 0)
+                                                            <button type="button" class="btn btn-warning btn-sm">
+                                                                <i class="fa fa-clock-o fa-1x"></i> Pendiente
+                                                            </button>
+                                                        @else
+                                                            <button type="button" class="btn btn-success btn-sm">
+                                                                <i class="fa fa-check fa-1x"></i> Cobrado
+                                                            </button>
+                                                        @endif
                                                     </td>
                                                     
                                                     <td>
