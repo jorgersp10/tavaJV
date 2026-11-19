@@ -505,12 +505,26 @@ class InformeController extends Controller
         //dd($request);
         //Consulta de Inmuebles
 
+        $pagosPorFactura = DB::table('pagos')
+            ->select('factura_id', DB::raw('SUM(total_pag) as total_pagado'))
+            ->groupBy('factura_id');
+
         $ventas = DB::table('ventas as v')
             ->join('clientes as c', 'c.id', '=', 'v.cliente_id')
-            ->leftjoin('pagos as p', 'v.id', '=', 'p.factura_id')
+            ->leftJoinSub($pagosPorFactura, 'pagos_factura', function ($join) {
+                $join->on('pagos_factura.factura_id', '=', 'v.id');
+            })
             ->select('v.id', 'v.fact_nro', 'v.iva5', 'v.iva10', 'v.ivaTotal', 'v.exenta', 'v.fecha',
-                'v.total', 'v.estado', 'c.nombre','v.contable','v.nro_recibo')
-            ->where('v.estado', '=', "0");
+                'v.total', 'v.estado', 'c.nombre','v.contable','v.nro_recibo',
+                DB::raw('COALESCE(pagos_factura.total_pagado, 0) as total_pagado'))
+            ->where('v.estado', '=', "0")
+            ->whereExists(function ($query) {
+                $query->select(DB::raw(1))
+                    ->from('cuotas as cu')
+                    ->join('cuotas_det as cdet', 'cdet.cuota_id', '=', 'cu.id')
+                    ->whereColumn('cu.factura_id', '=', 'v.id')
+                    ->where('cdet.estado_cuota', '=', 'P');
+            });
          if (empty($request->cliente_id_3)) {
             $cliente = null;
         } else {

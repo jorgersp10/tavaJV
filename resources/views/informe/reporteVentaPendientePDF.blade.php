@@ -9,14 +9,14 @@
     <style> 
         #datos{
         text-align: left;
-        font-size: 11px;
+        font-size: 10px;
         font-family: "Times New Roman", Times, serif;
         LINE-HEIGHT:10px;
         /* font-weight: bold; */
         }
         #letratabla{
         text-align: left;
-        font-size: 12px;
+        font-size: 11px;
         font-family: "Times New Roman", Times, serif;
         LINE-HEIGHT:8px;
         /* font-weight: bold; */
@@ -54,7 +54,7 @@
             margin-bottom: 1rem;
             background-color: transparent;
             border-collapse: collapse;
-            font-size: 12px;
+            font-size: 11px;
             font-family: "Times New Roman", Times, serif;
         }
         .table-bordered {
@@ -78,6 +78,22 @@
         .table thead th {
             vertical-align: bottom;
             border-bottom: 1px solid #c2cfd6;
+        }
+        #letratabla th:first-child,
+        #letratabla td:first-child {
+            width: 21%;
+        }
+        #letratabla th:nth-child(4),
+        #letratabla td:nth-child(4),
+        #letratabla th:nth-child(5),
+        #letratabla td:nth-child(5) {
+            width: 12%;
+        }
+        #letratabla th:nth-child(6),
+        #letratabla td:nth-child(6),
+        #letratabla th:nth-child(7),
+        #letratabla td:nth-child(7) {
+            width: 11%;
         }
         .table-bordered thead th, .table-bordered thead td {
             border-bottom-width: 1px;
@@ -122,7 +138,7 @@
 	    }
         #totales{		
             background-color: rgba(255,255,0,1);
-            font-size: 12px;
+            font-size: 11px;
             font-family: "Times New Roman", Times, serif;
             font-weight: bold;
         }
@@ -160,6 +176,8 @@
             @php
                 $total_iva=0;
                 $total_venta=0;
+                $total_pagado=0;
+                $total_saldo_pendiente=0;
             @endphp
             
                 <thead>  
@@ -169,6 +187,8 @@
                         <th>Fecha</th>
                         <th>Total Iva</th>
                         <th>Total Factura</th>
+                        <th>Total Pagado</th>
+                        <th>Saldo Pendiente</th>
                     </tr>
                 </thead>
             @foreach($ventas as $v)
@@ -184,14 +204,20 @@
                         @php
                             $iva_monto = $v->estado == 1 ? 0 : $v->ivaTotal;
                             $monto_total = $v->estado == 1 ? 0 : $v->total;
+                            $monto_pagado = $v->total_pagado;
+                            $saldo_pendiente = max($monto_total - $monto_pagado, 0);
                         @endphp
                         <td>Gs. {{number_format(($iva_monto), 0, ",", ".")}}</td>
                         <td>Gs. {{number_format(($monto_total), 0, ",", ".")}}</td>
+                        <td>Gs. {{number_format(($monto_pagado), 0, ",", ".")}}</td>
+                        <td>Gs. {{number_format(($saldo_pendiente), 0, ",", ".")}}</td>
                     </tr>
                 @php
                     if ($v->estado != 1) {
                         $total_iva=$total_iva + $v->ivaTotal;
                         $total_venta=$total_venta + $v->total;
+                        $total_pagado=$total_pagado + $monto_pagado;
+                        $total_saldo_pendiente=$total_saldo_pendiente + $saldo_pendiente;
                     }
                 @endphp
                 </tbody>
@@ -201,7 +227,9 @@
                 <td></td>
                 <td></td>                             
                 <td>Gs. {{number_format(($total_iva), 0, ",", ".")}}</td>
-                <td>Gs. {{number_format(($total_venta), 0, ",", ".")}}</td>                                                                     
+                <td>Gs. {{number_format(($total_venta), 0, ",", ".")}}</td>
+                <td>Gs. {{number_format(($total_pagado), 0, ",", ".")}}</td>
+                <td>Gs. {{number_format(($total_saldo_pendiente), 0, ",", ".")}}</td>
             </tr>   
             </table>
            
